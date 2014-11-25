@@ -16,15 +16,21 @@ public class GPSManager
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    public GPSManager(Context context)
+    private BaseManager base;
+
+    public GPSManager(Context context, final int activityIndexArg)
     {
+        activityIndex = activityIndexArg;
+
+        base = new BaseManager(context);
+
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener()
         {
             @Override
             public void onLocationChanged(Location location)
             {
-
+                base.saveLocation(location, activityIndex);
             }
 
             @Override
@@ -45,7 +51,17 @@ public class GPSManager
 
             }
         };
+    }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    public void start()
+    {
+        if(locationManager != null && locationListener != null)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    }
+
+    public void stop()
+    {
+        if(locationManager != null)
+            locationManager.removeUpdates(locationListener);
     }
 }

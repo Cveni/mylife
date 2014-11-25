@@ -35,7 +35,7 @@ public class BaseManager
     public long createNewActivity()
     {
         ContentValues values = new ContentValues();
-        values.put(BaseHelper.ACTIVITIES_LOCATIONS, "");
+        values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, "");
 
         open();
         long id = database.insert(BaseHelper.TABLE_NAME_ACTIVITIES, null, values);
@@ -49,7 +49,7 @@ public class BaseManager
         String whereClause = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(activityIndex)};
 
-        String[] cursorColumns = {BaseHelper.ACTIVITIES_LOCATIONS};
+        String[] cursorColumns = {BaseHelper.ACTIVITIES_COLUMN_LOCATIONS};
         String[] cursorWhereArgs = {String.valueOf(activityIndex)};
 
         open();
@@ -60,11 +60,11 @@ public class BaseManager
 
         if(activityCursor.moveToFirst())
         {
-            String locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_LOCATIONS))
+            String locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS))
                     + ";" + location.getLatitude() + ":" + location.getLongitude();
 
             ContentValues values = new ContentValues();
-            values.put(BaseHelper.ACTIVITIES_LOCATIONS, locations);
+            values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, locations);
 
             database.update(BaseHelper.TABLE_NAME_ACTIVITIES, values, whereClause, whereArgs);
         }
@@ -76,7 +76,7 @@ public class BaseManager
     public String getActivityLocations(int activityIndex)
     {
         String locations = null;
-        String[] cursorColumns = {BaseHelper.ACTIVITIES_LOCATIONS};
+        String[] cursorColumns = {BaseHelper.ACTIVITIES_COLUMN_LOCATIONS};
         String[] cursorWhereArgs = {String.valueOf(activityIndex)};
 
         open();
@@ -87,12 +87,25 @@ public class BaseManager
 
         if(activityCursor.moveToFirst())
         {
-            locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_LOCATIONS));
+            locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS));
         }
 
         activityCursor.close();
         close();
 
         return locations;
+    }
+
+    public void saveSteps(double steps)
+    {
+        ContentValues values = new ContentValues();
+        values.put(BaseHelper.STEPS_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()).toString());
+        values.put(BaseHelper.STEPS_COLUMN_VALUE, Double.valueOf(steps).toString());
+
+        open();
+
+        database.insert(BaseHelper.TABLE_NAME_STEPS, null, values);
+
+        close();
     }
 }
