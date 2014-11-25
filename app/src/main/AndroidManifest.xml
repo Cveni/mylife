@@ -32,6 +32,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".StepBroadcastReceiver" />
+
         <service android:name=".StepService" />
     </application>
 
