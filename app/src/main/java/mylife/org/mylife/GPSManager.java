@@ -1,6 +1,7 @@
 package mylife.org.mylife;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,56 +13,23 @@ import android.os.Bundle;
 
 public class GPSManager
 {
-    private static int activityIndex = 0;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    private Intent serviceIntent;
+    private Context context;
 
-    private BaseManager base;
-
-    public GPSManager(Context context, final int activityIndexArg)
+    public GPSManager(Context context)
     {
-        activityIndex = activityIndexArg;
-
-        base = new BaseManager(context);
-
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                base.saveLocation(location, activityIndex);
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle)
-            {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s)
-            {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s)
-            {
-
-            }
-        };
+        this.context = context;
+        serviceIntent = new Intent(context, GPSService.class);
     }
 
-    public void start()
+    public void start(long activityIndexArg)
     {
-        if(locationManager != null && locationListener != null)
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        serviceIntent.putExtra("activityIndex", activityIndexArg);
+        context.startService(serviceIntent);
     }
 
     public void stop()
     {
-        if(locationManager != null)
-            locationManager.removeUpdates(locationListener);
+        context.stopService(serviceIntent);
     }
 }

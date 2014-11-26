@@ -94,7 +94,10 @@ public class BaseManager
         if(activityCursor.moveToFirst())
         {
             String locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS))
-                    + ";" + location.getLatitude() + ":" + location.getLongitude();
+                    + ";" + String.valueOf(location.getLatitude()) +
+                    ":" + String.valueOf(location.getLongitude()) +
+                    ":" + String.valueOf(location.getAltitude()) +
+                    ":" + String.valueOf(System.currentTimeMillis());
 
             ContentValues values = new ContentValues();
             values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, locations);
