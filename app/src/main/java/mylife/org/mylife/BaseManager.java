@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.Bundle;
 
 /**
  * Created by Szymon on 2014-11-03.
@@ -32,10 +33,13 @@ public class BaseManager
         baseHelper.close();
     }
 
-    public long createNewActivity()
+    public long createNewActivity(String type)
     {
         ContentValues values = new ContentValues();
+        values.put(BaseHelper.ACTIVITIES_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()).toString());
+        values.put(BaseHelper.ACTIVITIES_COLUMN_TYPE, type);
         values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, "");
+        values.put(BaseHelper.ACTIVITIES_COLUMN_PULSE, "");
 
         open();
         long id = database.insert(BaseHelper.TABLE_NAME_ACTIVITIES, null, values);
@@ -44,7 +48,36 @@ public class BaseManager
         return id;
     }
 
-    public void saveLocation(Location location, int activityIndex)
+    public Bundle getActivityInformation(long id)
+    {
+        Bundle b = new Bundle();
+
+        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
+                BaseHelper.ACTIVITIES_COLUMN_TYPE, BaseHelper.ACTIVITIES_COLUMN_LOCATIONS,
+                BaseHelper.ACTIVITIES_COLUMN_PULSE};
+
+        open();
+        String selection = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        Cursor item = database.query(BaseHelper.TABLE_NAME_ACTIVITIES, allColumns, selection, selectionArgs,
+                null, null, null);
+
+        if(item.moveToFirst())
+        {
+            b.putLong("id", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)));
+            b.putLong("date", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)));
+            b.putString("type", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE)));
+            b.putString("locations", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS)));
+            b.putString("pulse", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_PULSE)));
+        }
+        item.close();
+        close();
+
+        return b;
+    }
+
+    public void saveLocation(Location location, long activityIndex)
     {
         String whereClause = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(activityIndex)};
@@ -73,7 +106,7 @@ public class BaseManager
         close();
     }
 
-    public String getActivityLocations(int activityIndex)
+    public String getActivityLocations(long activityIndex)
     {
         String locations = null;
         String[] cursorColumns = {BaseHelper.ACTIVITIES_COLUMN_LOCATIONS};
