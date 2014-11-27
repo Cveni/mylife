@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 /**
  * Created by Szymon on 2014-11-03.
  */
@@ -38,8 +40,6 @@ public class BaseManager
         ContentValues values = new ContentValues();
         values.put(BaseHelper.ACTIVITIES_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()).toString());
         values.put(BaseHelper.ACTIVITIES_COLUMN_TYPE, type);
-        values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, "");
-        values.put(BaseHelper.ACTIVITIES_COLUMN_PULSE, "");
 
         open();
         long id = database.insert(BaseHelper.TABLE_NAME_ACTIVITIES, null, values);
@@ -53,8 +53,7 @@ public class BaseManager
         Bundle b = new Bundle();
 
         String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
-                BaseHelper.ACTIVITIES_COLUMN_TYPE, BaseHelper.ACTIVITIES_COLUMN_LOCATIONS,
-                BaseHelper.ACTIVITIES_COLUMN_PULSE};
+                BaseHelper.ACTIVITIES_COLUMN_TYPE};
 
         open();
         String selection = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
@@ -68,8 +67,6 @@ public class BaseManager
             b.putLong("id", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)));
             b.putLong("date", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)));
             b.putString("type", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE)));
-            b.putString("locations", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS)));
-            b.putString("pulse", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_PULSE)));
         }
         item.close();
         close();
@@ -79,57 +76,58 @@ public class BaseManager
 
     public void saveLocation(Location location, long activityIndex)
     {
-        String whereClause = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
-        String[] whereArgs = {String.valueOf(activityIndex)};
-
-        String[] cursorColumns = {BaseHelper.ACTIVITIES_COLUMN_LOCATIONS};
-        String[] cursorWhereArgs = {String.valueOf(activityIndex)};
+        ContentValues values = new ContentValues();
+        values.put(BaseHelper.LOCATIONS_COLUMN_ACTIVITY_ID, Long.valueOf(activityIndex));
+        values.put(BaseHelper.LOCATIONS_COLUMN_ALTITUDE, Double.valueOf(location.getAltitude()));
+        values.put(BaseHelper.LOCATIONS_COLUMN_LATITUDE, String.valueOf(location.getLatitude()));
+        values.put(BaseHelper.LOCATIONS_COLUMN_LONGITUDE, String.valueOf(location.getLongitude()));
+        values.put(BaseHelper.LOCATIONS_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()));
 
         open();
-
-        Cursor activityCursor = database.query(BaseHelper.TABLE_NAME_ACTIVITIES, cursorColumns,
-                BaseHelper.ACTIVITIES_COLUMN_ID + " = ?", cursorWhereArgs,
-                null, null, null, null);
-
-        if(activityCursor.moveToFirst())
-        {
-            String locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS))
-                    + ";" + String.valueOf(location.getLatitude()) +
-                    ":" + String.valueOf(location.getLongitude()) +
-                    ":" + String.valueOf(location.getAltitude()) +
-                    ":" + String.valueOf(System.currentTimeMillis());
-
-            ContentValues values = new ContentValues();
-            values.put(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS, locations);
-
-            database.update(BaseHelper.TABLE_NAME_ACTIVITIES, values, whereClause, whereArgs);
-        }
-
-        activityCursor.close();
+        database.insert(BaseHelper.TABLE_NAME_LOCATIONS, null, values);
         close();
     }
 
-    public String getActivityLocations(long activityIndex)
+    public ArrayList<LocationModel> getActivityLocations(long activityIndex)
     {
-        String locations = null;
-        String[] cursorColumns = {BaseHelper.ACTIVITIES_COLUMN_LOCATIONS};
+        ArrayList<LocationModel> locations = new ArrayList<LocationModel>();
+        String[] cursorColumns = {BaseHelper.LOCATIONS_COLUMN_ALTITUDE, BaseHelper.LOCATIONS_COLUMN_LATITUDE,
+                BaseHelper.LOCATIONS_COLUMN_LONGITUDE, BaseHelper.LOCATIONS_COLUMN_DATE};
         String[] cursorWhereArgs = {String.valueOf(activityIndex)};
 
         open();
 
-        Cursor activityCursor = database.query(BaseHelper.TABLE_NAME_ACTIVITIES, cursorColumns,
-                BaseHelper.ACTIVITIES_COLUMN_ID + " = ?", cursorWhereArgs,
+        Cursor locationsCursor = database.query(BaseHelper.TABLE_NAME_LOCATIONS, cursorColumns,
+                BaseHelper.LOCATIONS_COLUMN_ACTIVITY_ID + " = ?", cursorWhereArgs,
                 null, null, null, null);
 
-        if(activityCursor.moveToFirst())
+        if(locationsCursor.moveToFirst())
         {
-            locations = activityCursor.getString(activityCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_LOCATIONS));
+            do
+            {
+                locations.add(new LocationModel(locationsCursor.getDouble(locationsCursor.getColumnIndex(BaseHelper.LOCATIONS_COLUMN_LATITUDE)),
+                        locationsCursor.getDouble(locationsCursor.getColumnIndex(BaseHelper.LOCATIONS_COLUMN_LONGITUDE)),
+                        locationsCursor.getDouble(locationsCursor.getColumnIndex(BaseHelper.LOCATIONS_COLUMN_ALTITUDE)),
+                        locationsCursor.getDouble(locationsCursor.getColumnIndex(BaseHelper.LOCATIONS_COLUMN_DATE))));
+            } while(locationsCursor.moveToNext());
         }
 
-        activityCursor.close();
+        locationsCursor.close();
         close();
 
         return locations;
+    }
+
+    public void savePulse(int value, long activityIndex)
+    {
+        ContentValues values = new ContentValues();
+        values.put(BaseHelper.PULSE_COLUMN_ACTIVITY_ID, Long.valueOf(activityIndex));
+        values.put(BaseHelper.PULSE_COLUMN_VALUE, Integer.valueOf(value));
+        values.put(BaseHelper.PULSE_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()));
+
+        open();
+        database.insert(BaseHelper.TABLE_NAME_PULSE, null, values);
+        close();
     }
 
     public void saveSteps(double steps)
