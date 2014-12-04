@@ -84,8 +84,8 @@ public class BaseHelper extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2)
     {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ACTIVITIES);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LOCATIONS_DATABASE_CREATE_SQL);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PULSE_DATABASE_CREATE_SQL);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOCATIONS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_PULSE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_STEPS);
         onCreate(sqLiteDatabase);
     }

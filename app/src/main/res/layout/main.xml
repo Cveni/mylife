@@ -32,13 +32,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn1"
-                android:id="@+id/main_btn1"/>
+                android:id="@+id/main_btn1"
+                android:onClick="btn1"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn2"
-                android:id="@+id/main_btn2"/>
+                android:id="@+id/main_btn2"
+                android:onClick="btn2"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -49,13 +51,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn3"
-                android:id="@+id/main_btn3"/>
+                android:id="@+id/main_btn3"
+                android:onClick="akcja"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn4"
-                android:id="@+id/main_btn4"/>
+                android:id="@+id/main_btn4"
+                android:onClick="akcja2"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -66,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn5"
-                android:id="@+id/main_btn5"/>
+                android:id="@+id/main_btn5"
+                android:onClick="akcja3"/>
 
         </LinearLayout>
 

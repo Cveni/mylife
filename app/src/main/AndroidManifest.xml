@@ -25,16 +25,30 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".StartupBroadcastReceiver">
+        <activity
+            android:name="mylife.org.mylife.Sport"
+            android:label="@string/title_activity_sport" >
+        </activity>
+
+        <activity
+            android:name="mylife.org.mylife.SportList"
+            android:label="@string/title_activity_sport_list" >
+        </activity>
+
+        <receiver android:name="mylife.org.mylife.StartupBroadcastReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.home"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.home" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".StepBroadcastReceiver" />
+        <receiver android:name="mylife.org.mylife.StepBroadcastReceiver" />
 
-        <service android:name=".StepService" />
+        <service android:name="mylife.org.mylife.GPSService" />
+
+        <service android:name="mylife.org.mylife.StepService" />
+
     </application>
 
 </manifest>

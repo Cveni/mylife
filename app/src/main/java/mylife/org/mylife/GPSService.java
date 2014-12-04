@@ -9,12 +9,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
 /**
  * Created by szymon on 26.11.14.
  */
 public class GPSService extends Service{
     private LocationManager locationManager;
+    private LocationListener locationListener;
     private PowerManager.WakeLock wl;
     private BaseManager base;
     private long activityIndex;
@@ -45,8 +47,7 @@ public class GPSService extends Service{
     private void setupLocationListener()
     {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
-                new LocationListener() {
+        locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         base.saveLocation(location, activityIndex);
@@ -66,13 +67,15 @@ public class GPSService extends Service{
                     public void onProviderDisabled(String s) {
 
                     }
-                });
+                };
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
     public void onDestroy()
     {
         wl.release();
+        locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
 }

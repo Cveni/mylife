@@ -30,7 +30,7 @@ public class StepCounter
                 public void onAccuracyChanged(Sensor sensor, int i) {
 
                 }
-            }, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            }, countSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public double getSteps()
