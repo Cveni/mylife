@@ -25,6 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.PointLabelFormatter;
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYPlot;
+
 public class Sport extends Activity /*implements ActionBar.TabListener*/
 {
     /**
@@ -48,7 +53,7 @@ public class Sport extends Activity /*implements ActionBar.TabListener*/
         setContentView(R.layout.sport);
 
         long id = getIntent().getLongExtra("id", -1);
-        LinearLayout ll = (LinearLayout)findViewById(R.id.frag);
+        //LinearLayout ll = (LinearLayout)findViewById(R.id.frag);
 
         BaseManager bm = new BaseManager(getApplicationContext());
 
@@ -60,7 +65,13 @@ public class Sport extends Activity /*implements ActionBar.TabListener*/
             float[] result = new float[3];
             float all = 0;
 
+            XYPlot plot = (XYPlot)findViewById(R.id.plot);
+            ArrayList<Double> xaxis = new ArrayList<Double>();
+            ArrayList<Double> yaxis = new ArrayList<Double>();
+
             LocationModel last = wynik.get(0);
+            xaxis.add(0.0);
+            yaxis.add(0.0);
 
             for (int i = 1; i < n; i++) {
                 LocationModel curr = wynik.get(i);
@@ -68,20 +79,20 @@ public class Sport extends Activity /*implements ActionBar.TabListener*/
                 Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
                 all += result[0];
 
+                xaxis.add((double)all);
+                yaxis.add(((double)result[0]/(curr.getDateTimestamp()-last.getDateTimestamp()))*1000);
+
                 last = curr;
             }
 
-            TextView tv = new TextView(getApplicationContext());
-            tv.setText("Wykonano " + n + " pomiarów");
-            tv.setTextColor(Color.BLACK);
-            tv.setTextSize(26);
-            TextView tv2 = new TextView(getApplicationContext());
-            tv2.setText("Pokonano " + Math.round(all) + " metrów");
-            tv2.setTextColor(Color.BLACK);
-            tv2.setTextSize(26);
+            SimpleXYSeries series = new SimpleXYSeries(xaxis, yaxis, "Predkosc");
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+            plot.addSeries(series, seriesFormat);
 
-            ll.addView(tv);
-            ll.addView(tv2);
+            TextView tv = (TextView)findViewById(R.id.label1);
+            tv.setText("Wykonano " + n + " pomiarów");
+            TextView tv2 = (TextView)findViewById(R.id.label2);
+            tv2.setText("Pokonano " + Math.round(all) + " metrów");
         }
     }
         // Set up the action bar.
