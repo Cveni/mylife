@@ -8,12 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.Calendar;
 import java.util.Date;
-
 
 public class SportList extends Activity {
 
@@ -34,7 +30,7 @@ public class SportList extends Activity {
             {
                 Date d = new Date();
                 d.setTime(date);
-                Button but = new Button(getApplicationContext());
+                Button but = new Button(this);
                 but.setText(d.toString());
                 but.setOnClickListener(new View.OnClickListener() {
                     @Override

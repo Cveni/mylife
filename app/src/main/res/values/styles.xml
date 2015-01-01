@@ -1,19 +1,48 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.DeviceDefault.Light">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
 
-        <item name="android:windowActionBar">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <!--<item name="android:windowBackground">@color/kulerGreen4</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>-->
+
+    </style>
+
+    <style name="AppThemeBar" parent="AppTheme">
+
         <item name="android:windowNoTitle">false</item>
-        <item name="android:background">@color/MainColor</item>
-
-        <item name="android:actionBarStyle">@style/CustomActionBar</item>
 
     </style>
 
-    <style name="CustomActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/MainColor</item>
+    <!--<style name="CustomActionBar" parent="Widget.AppCompat.ActionBar">
+
+        <item name="android:background">@color/kulerGreen3</item>
+
     </style>
 
-    <color name="MainColor">#7CB618</color>
+
+    <color name="original">#7CB618</color>
+
+    <color name="kulerGreen1">#0DFF73</color>
+    <color name="kulerGreen2">#0CE82A</color>
+    <color name="kulerGreen3">#2DFF00</color>
+    <color name="kulerGreen4">#7FE80C</color>
+    <color name="kulerGreen5">#E1FF0D</color>
+
+    <color name="lightGreen50">#f1f8e9</color>
+    <color name="lightGreen100">#dcedc8</color>
+    <color name="lightGreen200">#c5e1a5</color>
+    <color name="lightGreen300">#aed581</color>
+    <color name="lightGreen400">#9ccc65</color>
+    <color name="lightGreen500">#8bc34a</color>
+    <color name="lightGreen600">#7cb342</color>
+    <color name="lightGreen700">#689f38</color>
+    <color name="lightGreen800">#558b2f</color>
+    <color name="lightGreen900">#33691e</color>
+    <color name="lightGreenA100">#ccff90</color>
+    <color name="lightGreenA200">#b2ff59</color>
+    <color name="lightGreenA400">#76ff03</color>
+    <color name="lightGreenA700">#64dd17</color>-->
 
 </resources>

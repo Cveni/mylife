@@ -27,11 +27,13 @@
 
         <activity
             android:name="mylife.org.mylife.Sport"
+            android:theme="@style/AppThemeBar"
             android:label="@string/title_activity_sport" >
         </activity>
 
         <activity
             android:name="mylife.org.mylife.SportList"
+            android:theme="@style/AppThemeBar"
             android:label="@string/title_activity_sport_list" >
         </activity>
 
