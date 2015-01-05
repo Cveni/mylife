@@ -62,6 +62,12 @@ public class Main extends Activity
         startActivity(i);
     }
 
+    public void btn5(View v)
+    {
+        Intent i = new Intent(getApplicationContext(), Settings.class);
+        startActivity(i);
+    }
+
     public void akcja(View v)
     {
         gps.start(bm.createNewActivity(""));

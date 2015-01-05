@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn5"
                 android:id="@+id/main_btn5"
-                android:onClick="akcja3"/>
+                android:onClick="btn5"/>
 
         </LinearLayout>
 

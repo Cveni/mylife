@@ -14,9 +14,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
-            android:name="mylife.org.mylife.Main"
+            android:name=".Main"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,32 +23,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="mylife.org.mylife.Sport"
+            android:name=".Sport"
+            android:label="@string/title_activity_sport"
+            android:theme="@style/AppThemeBar" >
+        </activity>
+        <activity
+            android:name=".SportList"
+            android:label="@string/title_activity_sport_list"
+            android:theme="@style/AppThemeBar" >
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
             android:theme="@style/AppThemeBar"
-            android:label="@string/title_activity_sport" >
+            android:parentActivityName=".Main" >
         </activity>
 
-        <activity
-            android:name="mylife.org.mylife.SportList"
-            android:theme="@style/AppThemeBar"
-            android:label="@string/title_activity_sport_list" >
-        </activity>
-
-        <receiver android:name="mylife.org.mylife.StartupBroadcastReceiver" >
+        <receiver android:name=".StartupBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
                 <category android:name="android.intent.category.home" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".StepBroadcastReceiver" />
 
-        <receiver android:name="mylife.org.mylife.StepBroadcastReceiver" />
-
-        <service android:name="mylife.org.mylife.GPSService" />
-
-        <service android:name="mylife.org.mylife.StepService" />
+        <service android:name=".GPSService" />
+        <service android:name=".StepService" />
 
     </application>
 
