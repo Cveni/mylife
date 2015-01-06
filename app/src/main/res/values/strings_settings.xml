@@ -3,7 +3,9 @@
     <string name="settings_category_gps">GPS</string>
     <string name="settings_gps_use_title">Wykorzystaj GPS</string>
     <string name="settings_gps_use_summary">Użyj GPS do rejestracji aktywności sportowej</string>
+    <string name="settings_gps_use_key">gps_use</string>
     <string name="settings_gps_freq_title">Minimalny czas pomiędzy pomiarami</string>
+    <string name="settings_gps_freq_key">gps_freq</string>
     <string-array name="settings_gps_freq_items">
         <item>0 ms</item>
         <item>100 ms</item>
@@ -24,7 +26,9 @@
     <string name="settings_category_pulse">Pulsometr</string>
     <string name="settings_pulse_use_title">Wykorzystaj pulsometr</string>
     <string name="settings_pulse_use_summary">Użyj pulsometru do rejestracji aktywności sportowej (wymaga urządzenia z ANT+)</string>
+    <string name="settings_pulse_use_key">pulse_use</string>
     <string name="settings_pulse_freq_title">Minimalny czas pomiędzy pomiarami</string>
+    <string name="settings_pulse_freq_key">pulse_freq</string>
     <string-array name="settings_pulse_freq_items">
         <item>0 ms</item>
         <item>100 ms</item>
@@ -45,7 +49,9 @@
     <string name="settings_category_step">Krokomierz</string>
     <string name="settings_step_use_title">Wykorzystaj krokomierz</string>
     <string name="settings_step_use_summary">Użyj krokomierza do rejestracji aktywności dziennej (wymaga wbudowanego licznika kroków)</string>
+    <string name="settings_step_use_key">step_use</string>
     <string name="settings_step_freq_title">Czas pomiędzy pomiarami</string>
+    <string name="settings_step_freq_key">step_freq</string>
     <string-array name="settings_step_freq_items">
         <item>10 minut</item>
         <item>20 minut</item>
@@ -63,8 +69,11 @@
 
     <string name="settings_category_user">Użytkownik</string>
     <string name="settings_user_weight_title">Waga (w kg)</string>
+    <string name="settings_user_weight_key">user_weight</string>
     <string name="settings_user_height_title">Wzrost (w cm)</string>
+    <string name="settings_user_height_key">user_height</string>
     <string name="settings_user_gender_title">Płeć</string>
+    <string name="settings_user_gender_key">user_gender</string>
     <string-array name="settings_user_gender_items">
         <item>Mężczyzna</item>
         <item>Kobieta</item>
