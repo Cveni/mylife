@@ -1,0 +1,30 @@
+<resources>
+
+    <string name="settings_category_gps">GPS</string>
+    <string name="settings_gps_use_title">Wykorzystaj GPS</string>
+    <string name="settings_gps_use_summary">Użyj GPS do rejestracji aktywności sportowej</string>
+    <string name="settings_gps_freq_title">Minimalny czas pomiędzy pomiarami</string>
+    <string-array name="settings_gps_freq_items">
+        <item name="0">0 ms</item>
+        <item name="1">100 ms</item>
+        <item name="2">200 ms</item>
+        <item name="3">300 ms</item>
+        <item name="4">500 ms</item>
+        <item name="5">1000 ms</item>
+    </string-array>
+    <string-array name="settings_gps_freq_values">
+        <item name="0">0</item>
+        <item name="1">100</item>
+        <item name="2">200</item>
+        <item name="3">300</item>
+        <item name="4">500</item>
+        <item name="5">1000</item>
+    </string-array>
+
+    <string name="settings_category_pulse">Pulsometr</string>
+
+    <string name="settings_category_step">Krokomierz</string>
+
+    <string name="settings_category_user">Użytkownik</string>
+
+</resources>

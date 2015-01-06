@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">My Life</string>
@@ -18,7 +17,7 @@
     <string name="title_activity_sport_list">Lista aktywności</string>
 
     <string name="title_activity_settings">Ustawienia</string>
-    <string name="action_save">Zapisz</string>
-    <string name="action_reset">Domyślne</string>
+    <string name="settings_action_reset">Domyślne</string>
+    <string name="settings_action_reset_toast">Przywrócono domyślne ustawienia</string>
 
 </resources>
