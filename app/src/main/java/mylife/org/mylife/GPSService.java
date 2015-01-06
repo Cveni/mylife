@@ -3,13 +3,16 @@ package mylife.org.mylife;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by szymon on 26.11.14.
@@ -68,7 +71,11 @@ public class GPSService extends Service{
 
                     }
                 };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        long time = Long.parseLong(settings.getString(getApplicationContext().getResources().getString(R.string.settings_gps_freq_key), "0"));
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, 0, locationListener);
     }
 
     @Override
