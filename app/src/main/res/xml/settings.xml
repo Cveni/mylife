@@ -22,9 +22,41 @@
 
     <PreferenceCategory android:title="@string/settings_category_pulse">
 
+        <SwitchPreference
+            android:key="pulse_use"
+            android:title="@string/settings_pulse_use_title"
+            android:summary="@string/settings_pulse_use_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="pulse_freq"
+            android:title="@string/settings_pulse_freq_title"
+            android:summary="%s"
+            android:defaultValue="0"
+            android:entries="@array/settings_pulse_freq_items"
+            android:entryValues="@array/settings_pulse_freq_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_category_step">
+
+        <SwitchPreference
+            android:key="step_use"
+            android:title="@string/settings_step_use_title"
+            android:summary="@string/settings_step_use_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="step_freq"
+            android:title="@string/settings_step_freq_title"
+            android:summary="%s"
+            android:defaultValue="3600"
+            android:entries="@array/settings_step_freq_items"
+            android:entryValues="@array/settings_step_freq_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
 
     </PreferenceCategory>
 
