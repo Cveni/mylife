@@ -2,7 +2,7 @@
 
     <PreferenceCategory android:title="@string/settings_category_gps">
 
-        <SwitchPreference
+        <mylife.org.mylife.SwitchPreferenceNew
             android:key="gps_use"
             android:title="@string/settings_gps_use_title"
             android:summary="@string/settings_gps_use_summary"
@@ -22,7 +22,7 @@
 
     <PreferenceCategory android:title="@string/settings_category_pulse">
 
-        <SwitchPreference
+        <mylife.org.mylife.SwitchPreferenceNew
             android:key="pulse_use"
             android:title="@string/settings_pulse_use_title"
             android:summary="@string/settings_pulse_use_summary"
@@ -42,7 +42,7 @@
 
     <PreferenceCategory android:title="@string/settings_category_step">
 
-        <SwitchPreference
+        <mylife.org.mylife.SwitchPreferenceNew
             android:key="step_use"
             android:title="@string/settings_step_use_title"
             android:summary="@string/settings_step_use_summary"
