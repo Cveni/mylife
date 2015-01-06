@@ -1,0 +1,35 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_category_gps">
+
+        <SwitchPreference
+            android:key="gps_use"
+            android:title="@string/settings_gps_use_title"
+            android:summary="@string/settings_gps_use_summary"
+            android:defaultValue="true" />
+
+        <ListPreference
+            android:key="gps_freq"
+            android:title="@string/settings_gps_freq_title"
+            android:summary="%s"
+            android:defaultValue="0"
+            android:entries="@array/settings_gps_freq_items"
+            android:entryValues="@array/settings_gps_freq_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_pulse">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_step">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_user">
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
