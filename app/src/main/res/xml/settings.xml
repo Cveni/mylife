@@ -62,6 +62,30 @@
 
     <PreferenceCategory android:title="@string/settings_category_user">
 
+        <mylife.org.mylife.EditTextPreferenceNew
+            android:key="user_weight"
+            android:title="@string/settings_user_weight_title"
+            android:summary="80"
+            android:defaultValue="80"
+            android:numeric="integer" />
+
+        <mylife.org.mylife.EditTextPreferenceNew
+            android:key="user_height"
+            android:title="@string/settings_user_height_title"
+            android:summary="180"
+            android:defaultValue="180"
+            android:numeric="integer" />
+
+        <ListPreference
+            android:key="user_gender"
+            android:title="@string/settings_user_gender_title"
+            android:summary="%s"
+            android:defaultValue="M"
+            android:entries="@array/settings_user_gender_items"
+            android:entryValues="@array/settings_user_gender_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -5,20 +5,20 @@
     <string name="settings_gps_use_summary">Użyj GPS do rejestracji aktywności sportowej</string>
     <string name="settings_gps_freq_title">Minimalny czas pomiędzy pomiarami</string>
     <string-array name="settings_gps_freq_items">
-        <item name="0">0 ms</item>
-        <item name="1">100 ms</item>
-        <item name="2">200 ms</item>
-        <item name="3">300 ms</item>
-        <item name="4">500 ms</item>
-        <item name="5">1000 ms</item>
+        <item>0 ms</item>
+        <item>100 ms</item>
+        <item>200 ms</item>
+        <item>300 ms</item>
+        <item>500 ms</item>
+        <item>1000 ms</item>
     </string-array>
     <string-array name="settings_gps_freq_values">
-        <item name="0">0</item>
-        <item name="1">100</item>
-        <item name="2">200</item>
-        <item name="3">300</item>
-        <item name="4">500</item>
-        <item name="5">1000</item>
+        <item>0</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+        <item>1000</item>
     </string-array>
 
     <string name="settings_category_pulse">Pulsometr</string>
@@ -26,20 +26,20 @@
     <string name="settings_pulse_use_summary">Użyj pulsometru do rejestracji aktywności sportowej (wymaga urządzenia z ANT+)</string>
     <string name="settings_pulse_freq_title">Minimalny czas pomiędzy pomiarami</string>
     <string-array name="settings_pulse_freq_items">
-        <item name="0">0 ms</item>
-        <item name="1">100 ms</item>
-        <item name="2">200 ms</item>
-        <item name="3">300 ms</item>
-        <item name="4">500 ms</item>
-        <item name="5">1000 ms</item>
+        <item>0 ms</item>
+        <item>100 ms</item>
+        <item>200 ms</item>
+        <item>300 ms</item>
+        <item>500 ms</item>
+        <item>1000 ms</item>
     </string-array>
     <string-array name="settings_pulse_freq_values">
-        <item name="0">0</item>
-        <item name="1">100</item>
-        <item name="2">200</item>
-        <item name="3">300</item>
-        <item name="4">500</item>
-        <item name="5">1000</item>
+        <item>0</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+        <item>1000</item>
     </string-array>
 
     <string name="settings_category_step">Krokomierz</string>
@@ -47,20 +47,31 @@
     <string name="settings_step_use_summary">Użyj krokomierza do rejestracji aktywności dziennej (wymaga wbudowanego licznika kroków)</string>
     <string name="settings_step_freq_title">Czas pomiędzy pomiarami</string>
     <string-array name="settings_step_freq_items">
-        <item name="0">10 minut</item>
-        <item name="1">20 minut</item>
-        <item name="2">30 minut</item>
-        <item name="3">1 godzina</item>
-        <item name="4">2 godziny</item>
+        <item>10 minut</item>
+        <item>20 minut</item>
+        <item>30 minut</item>
+        <item>1 godzina</item>
+        <item>2 godziny</item>
     </string-array>
     <string-array name="settings_step_freq_values">
-        <item name="0">600</item>
-        <item name="1">1200</item>
-        <item name="2">1800</item>
-        <item name="3">3600</item>
-        <item name="4">7200</item>
+        <item>600</item>
+        <item>1200</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
     </string-array>
 
     <string name="settings_category_user">Użytkownik</string>
+    <string name="settings_user_weight_title">Waga (w kg)</string>
+    <string name="settings_user_height_title">Wzrost (w cm)</string>
+    <string name="settings_user_gender_title">Płeć</string>
+    <string-array name="settings_user_gender_items">
+        <item>Mężczyzna</item>
+        <item>Kobieta</item>
+    </string-array>
+    <string-array name="settings_user_gender_values">
+        <item>M</item>
+        <item>K</item>
+    </string-array>
 
 </resources>
