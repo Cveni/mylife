@@ -3,17 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding"
     tools:context="mylife.org.mylife.SportList" >
 
-    <LinearLayout
-        android:id="@+id/lista"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true" >
-
-    </LinearLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sport_list"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

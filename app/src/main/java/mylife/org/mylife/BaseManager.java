@@ -74,9 +74,9 @@ public class BaseManager
         return b;
     }
 
-    public ArrayList<Bundle> getActivitiesInformation()
+    public ArrayList<ActivityModel> getActivitiesInformation()
     {
-        ArrayList<Bundle> activities = new ArrayList<Bundle>();
+        ArrayList<ActivityModel> activities = new ArrayList<ActivityModel>();
 
         String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
                 BaseHelper.ACTIVITIES_COLUMN_TYPE};
@@ -91,13 +91,11 @@ public class BaseManager
         {
             do
             {
-                Bundle b = new Bundle();
-
-                b.putLong("id", activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)));
-                b.putLong("date", activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)));
-                b.putString("type", activitiesCursor.getString(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE)));
-
-                activities.add(b);
+                activities.add(new ActivityModel(
+                        activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)),
+                        activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)),
+                        activitiesCursor.getString(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE))
+                ));
             } while(activitiesCursor.moveToNext());
         }
 

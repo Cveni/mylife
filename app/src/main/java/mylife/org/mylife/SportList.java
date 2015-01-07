@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-
-import java.util.Date;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class SportList extends Activity {
 
@@ -19,7 +17,22 @@ public class SportList extends Activity {
         setContentView(R.layout.sport_list);
 
         BaseManager bm = new BaseManager(getApplicationContext());
-        LinearLayout ll = (LinearLayout)findViewById(R.id.lista);
+
+        ListView lv = (ListView)findViewById(R.id.sport_list);
+        lv.setAdapter(new SportListAdapter(this, R.layout.sport_list_item, bm.getActivitiesInformation()));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                ActivityModel am = (ActivityModel)parent.getAdapter().getItem(position);
+
+                Intent i = new Intent(getApplicationContext(), Sport.class);
+                i.putExtra("id", am.getId());
+                startActivity(i);
+            }
+        });
+
+        /*LinearLayout ll = (LinearLayout)findViewById(R.id.lista);
 
         for(int i = 0; i < 15; i++)
         {
@@ -43,7 +56,7 @@ public class SportList extends Activity {
                 });
                 ll.addView(but);
             }
-        }
+        }*/
     }
 
     @Override
