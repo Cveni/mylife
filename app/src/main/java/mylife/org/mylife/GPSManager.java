@@ -2,11 +2,6 @@ package mylife.org.mylife;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Created by Szymon on 2014-11-03.

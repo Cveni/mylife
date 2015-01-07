@@ -74,6 +74,39 @@ public class BaseManager
         return b;
     }
 
+    public ArrayList<Bundle> getActivitiesInformation()
+    {
+        ArrayList<Bundle> activities = new ArrayList<Bundle>();
+
+        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
+                BaseHelper.ACTIVITIES_COLUMN_TYPE};
+
+        open();
+
+        Cursor activitiesCursor = database.query(BaseHelper.TABLE_NAME_ACTIVITIES, allColumns,
+                null, null,
+                null, null, null, null);
+
+        if(activitiesCursor.moveToFirst())
+        {
+            do
+            {
+                Bundle b = new Bundle();
+
+                b.putLong("id", activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)));
+                b.putLong("date", activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)));
+                b.putString("type", activitiesCursor.getString(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE)));
+
+                activities.add(b);
+            } while(activitiesCursor.moveToNext());
+        }
+
+        activitiesCursor.close();
+        close();
+
+        return activities;
+    }
+
     public void saveLocation(Location location, long activityIndex)
     {
         ContentValues values = new ContentValues();

@@ -35,7 +35,7 @@ public class Main extends Activity
     {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
-    }*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -48,7 +48,7 @@ public class Main extends Activity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void btn1(View v)
     {
