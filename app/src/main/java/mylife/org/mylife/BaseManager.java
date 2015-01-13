@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Szymon on 2014-11-03.
@@ -172,5 +173,42 @@ public class BaseManager
         database.insert(BaseHelper.TABLE_NAME_STEPS, null, values);
 
         close();
+    }
+
+    public ArrayList<Step> getStepsByDay(Calendar day)
+    {
+        day.set(Calendar.HOUR, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        long dayStartTimestamp = day.getTimeInMillis();
+
+        day.set(Calendar.HOUR, 23);
+        day.set(Calendar.MINUTE, 59);
+        day.set(Calendar.SECOND, 59);
+        day.set(Calendar.MILLISECOND, 499);
+        long dayEndTimestamp = day.getTimeInMillis();
+
+        ArrayList<Step> steps = new ArrayList<Step>();
+
+        String[] cursorColumns = {BaseHelper.STEPS_COLUMN_DATE, BaseHelper.STEPS_COLUMN_VALUE};
+        String[] cursorWhereArgs = {String.valueOf(dayStartTimestamp), String.valueOf(dayEndTimestamp)};
+        open();
+
+        Cursor stepsCursor = database.query(BaseHelper.TABLE_NAME_STEPS, cursorColumns,
+                BaseHelper.STEPS_COLUMN_DATE + " BETWEEN ? AND ?", cursorWhereArgs, null, null, null, null);
+
+        if(stepsCursor.moveToFirst())
+        {
+            do
+            {
+                steps.add(new Step(stepsCursor.getLong(stepsCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_DATE)),
+                        stepsCursor.getDouble(stepsCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_VALUE))));
+            } while(stepsCursor.moveToNext());
+        }
+
+        close();
+
+        return steps;
     }
 }
