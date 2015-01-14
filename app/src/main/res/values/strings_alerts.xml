@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="alert_positive">OK</string>
+    <string name="alert_negative">Anuluj</string>
+
+    <string name="settings_alert_default_title">Ustawienia domyślne</string>
+    <string name="settings_alert_default_msg">Przywrócić domyślne wartości ustawień?</string>
+    <string name="settings_alert_default_toast">Przywrócono domyślne ustawienia</string>
+
+</resources>

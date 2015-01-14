@@ -8,7 +8,7 @@
             android:summary="@string/settings_gps_use_summary"
             android:defaultValue="true" />
 
-        <ListPreference
+        <mylife.org.mylife.ListPreferenceNew
             android:key="@string/settings_gps_freq_key"
             android:title="@string/settings_gps_freq_title"
             android:summary="%s"
@@ -28,7 +28,7 @@
             android:summary="@string/settings_pulse_use_summary"
             android:defaultValue="false" />
 
-        <ListPreference
+        <mylife.org.mylife.ListPreferenceNew
             android:key="@string/settings_pulse_freq_key"
             android:title="@string/settings_pulse_freq_title"
             android:summary="%s"
@@ -48,7 +48,7 @@
             android:summary="@string/settings_step_use_summary"
             android:defaultValue="false" />
 
-        <ListPreference
+        <mylife.org.mylife.ListPreferenceNew
             android:key="@string/settings_step_freq_key"
             android:title="@string/settings_step_freq_title"
             android:summary="%s"
@@ -76,7 +76,7 @@
             android:defaultValue="180"
             android:numeric="integer" />
 
-        <ListPreference
+        <mylife.org.mylife.ListPreferenceNew
             android:key="@string/settings_user_gender_key"
             android:title="@string/settings_user_gender_title"
             android:summary="%s"
