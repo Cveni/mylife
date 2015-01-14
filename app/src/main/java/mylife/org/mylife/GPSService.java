@@ -51,7 +51,7 @@ public class GPSService extends Service{
         locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        base.saveLocation(location, activityIndex);
+                        if(location.getAccuracy() < 20) base.saveLocation(location, activityIndex);
                     }
 
                     @Override
