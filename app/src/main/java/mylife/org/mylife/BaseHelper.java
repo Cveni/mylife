@@ -18,7 +18,9 @@ public class BaseHelper extends SQLiteOpenHelper
 
     //activities columns
     public static final String ACTIVITIES_COLUMN_ID = "_id";
+    public static final String ACTIVITIES_COLUMN_NAME = "name";
     public static final String ACTIVITIES_COLUMN_DATE = "date";
+    public static final String ACTIVITIES_COLUMN_DEVICE = "device";
     public static final String ACTIVITIES_COLUMN_TYPE = "type";
 
     public static final String LOCATIONS_COLUMN_ID = "_id";
@@ -39,12 +41,14 @@ public class BaseHelper extends SQLiteOpenHelper
 
 
     private static final String DATABASE_NAME = "mylifedb.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database creation sql statement
     private static final String ACTIVITIES_DATABASE_CREATE_SQL = "create table " + TABLE_NAME_ACTIVITIES +
             "(" + ACTIVITIES_COLUMN_ID + " integer primary key autoincrement, " +
+            ACTIVITIES_COLUMN_NAME + " text, " +
             ACTIVITIES_COLUMN_DATE + " integer, " +
+            ACTIVITIES_COLUMN_DEVICE + " integer, " +
             ACTIVITIES_COLUMN_TYPE + " text);";
 
     private static final String LOCATIONS_DATABASE_CREATE_SQL = "create table " + TABLE_NAME_LOCATIONS +

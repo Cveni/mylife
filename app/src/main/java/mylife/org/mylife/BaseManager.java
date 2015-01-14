@@ -36,10 +36,12 @@ public class BaseManager
         baseHelper.close();
     }
 
-    public long createNewActivity(String type)
+    public long createNewActivity(String name, String type)
     {
         ContentValues values = new ContentValues();
+        values.put(BaseHelper.ACTIVITIES_COLUMN_NAME, name);
         values.put(BaseHelper.ACTIVITIES_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()).toString());
+        values.put(BaseHelper.ACTIVITIES_COLUMN_DEVICE, "0");
         values.put(BaseHelper.ACTIVITIES_COLUMN_TYPE, type);
 
         open();
@@ -49,12 +51,12 @@ public class BaseManager
         return id;
     }
 
-    public Bundle getActivityInformation(long id)
+    public ActivityModel getActivityInformation(long id)
     {
-        Bundle b = new Bundle();
+        ActivityModel activity = null;
 
-        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
-                BaseHelper.ACTIVITIES_COLUMN_TYPE};
+        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_NAME,
+                BaseHelper.ACTIVITIES_COLUMN_DATE, BaseHelper.ACTIVITIES_COLUMN_DEVICE, BaseHelper.ACTIVITIES_COLUMN_TYPE};
 
         open();
         String selection = BaseHelper.ACTIVITIES_COLUMN_ID + " = ?";
@@ -65,22 +67,26 @@ public class BaseManager
 
         if(item.moveToFirst())
         {
-            b.putLong("id", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)));
-            b.putLong("date", item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)));
-            b.putString("type", item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE)));
+            activity = new ActivityModel(
+                    item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)),
+                    item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_NAME)),
+                    item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)),
+                    item.getLong(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DEVICE)),
+                    item.getString(item.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE))
+            );
         }
         item.close();
         close();
 
-        return b;
+        return activity;
     }
 
     public ArrayList<ActivityModel> getActivitiesInformation()
     {
         ArrayList<ActivityModel> activities = new ArrayList<ActivityModel>();
 
-        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_DATE,
-                BaseHelper.ACTIVITIES_COLUMN_TYPE};
+        String[] allColumns = {BaseHelper.ACTIVITIES_COLUMN_ID, BaseHelper.ACTIVITIES_COLUMN_NAME,
+                BaseHelper.ACTIVITIES_COLUMN_DATE, BaseHelper.ACTIVITIES_COLUMN_DEVICE, BaseHelper.ACTIVITIES_COLUMN_TYPE};
 
         open();
 
@@ -94,7 +100,9 @@ public class BaseManager
             {
                 activities.add(new ActivityModel(
                         activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_ID)),
+                        activitiesCursor.getString(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_NAME)),
                         activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DATE)),
+                        activitiesCursor.getLong(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_DEVICE)),
                         activitiesCursor.getString(activitiesCursor.getColumnIndex(BaseHelper.ACTIVITIES_COLUMN_TYPE))
                 ));
             } while(activitiesCursor.moveToNext());

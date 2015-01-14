@@ -70,7 +70,7 @@ public class Main extends Activity
 
     public void akcja(View v)
     {
-        gps.start(bm.createNewActivity(""));
+        gps.start(bm.createNewActivity("", ""));
 
         Toast.makeText(getApplicationContext(), "Rozpoczęto rejestrację aktywności", Toast.LENGTH_LONG).show();
     }
