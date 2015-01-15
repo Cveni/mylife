@@ -10,9 +10,12 @@
     <string name="str_main_btn5">Ustawienia</string>
 
     <string name="title_activity_sport">Aktywność</string>
-    <string name="sport_tab1">Mapa</string>
-    <string name="sport_tab2">Statystyki</string>
-    <string name="sport_tab3">Pulsometr</string>
+    <string name="sport_tab1">Informacje</string>
+    <string name="sport_tab2">Mapa</string>
+    <string name="sport_tab3">Prędkość</string>
+    <string name="sport_tab4">Puls</string>
+    <string name="sport_tab5">Statystyki (1)</string>
+    <string name="sport_tab6">Statystyki (2)</string>
 
     <string name="title_activity_sport_list">Lista aktywności</string>
 

@@ -1,0 +1,26 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mylife.org.mylife.Sport$SportPage">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/label1"
+        android:textSize="24dp"
+        android:layout_margin="6dp"
+        android:layout_alignParentTop="true"
+        android:padding="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/label2"
+        android:textSize="24dp"
+        android:layout_margin="6dp"
+        android:layout_below="@id/label1"
+        android:padding="0dp" />
+
+</RelativeLayout>
