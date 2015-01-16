@@ -1,7 +1,6 @@
 package mylife.org.mylife;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -10,9 +9,12 @@ import android.app.FragmentTransaction;
 import android.location.Location;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -59,7 +61,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
     }
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.sport_menu, menu);
@@ -71,15 +73,19 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int ids = item.getItemId();
+
+        /*SportPage sp = (SportPage)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+        sp.update("Here comes update!");
+        mSectionsPagerAdapter.notifyDataSetChanged();*/
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (ids == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
@@ -95,7 +101,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter
     {
         public SectionsPagerAdapter(FragmentManager fm)
         {
@@ -115,8 +121,14 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
+        public int getItemPosition(Object object)
+        {
+            return FragmentPagerAdapter.POSITION_NONE;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
             switch (position)
             {
                 case 0:
@@ -136,7 +148,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
     }
 
-    public static class SportPage extends Fragment
+    public static class SportPage extends Fragment implements Updatable
     {
         public static SportPage newInstance(long id, int page)
         {
@@ -281,5 +293,15 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
             return page;
         }
+
+        public void update(String data)
+        {
+            // soon
+        }
+    }
+
+    public interface Updatable
+    {
+        public void update(String data);
     }
 }
