@@ -22,6 +22,26 @@
     <string name="title_activity_settings">Ustawienia</string>
     <string name="settings_action_reset">Domyślne</string>
 
+    <string-array name="sport_activity_types">
+        <item>Aerobik</item>
+        <item>Bieganie</item>
+        <item>Jazda na łyżwach</item>
+        <item>Jazda na nartach</item>
+        <item>Jazda na rolkach</item>
+        <item>Jazda na rowerze</item>
+        <item>Spacer</item>
+    </string-array>
+
+    <string-array name="sport_activity_types_db">
+        <item>aero</item>
+        <item>bieg</item>
+        <item>lyzwy</item>
+        <item>narty</item>
+        <item>rolki</item>
+        <item>rower</item>
+        <item>spacer</item>
+    </string-array>
+
     <string-array name="gps_stats_titles">
         <item>Min. prędkość</item>
         <item>Max. prędkość</item>
