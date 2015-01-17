@@ -35,13 +35,13 @@ public class SportListAdapter extends ArrayAdapter<ActivityModel>
     {
         view = inflater.inflate(R.layout.sport_list_item, null);
 
-        TextView tvid = (TextView)view.findViewById(R.id.sport_list_item_id);
-        tvid.setText(list.get(position).getId()+"");
+        TextView tvId = (TextView)view.findViewById(R.id.sport_list_item_name);
+        tvId.setText(list.get(position).getId()+"");
 
-        TextView tvdate = (TextView)view.findViewById(R.id.sport_list_item_date);
+        TextView tvDate = (TextView)view.findViewById(R.id.sport_list_item_date);
         Date d = new Date();
         d.setTime(list.get(position).getDate());
-        tvdate.setText(d.toString());
+        tvDate.setText(d.toString());
 
         return view;
     }

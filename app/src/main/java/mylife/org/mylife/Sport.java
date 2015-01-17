@@ -17,7 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.ViewTreeObserver;
+import android.widget.GridView;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
@@ -251,7 +252,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         public View page5(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View page = inflater.inflate(R.layout.sport_page5, container, false);
+            final View page = inflater.inflate(R.layout.sport_page5, container, false);
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
 
@@ -278,10 +279,35 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     last = curr;
                 }
 
-                TextView tv = (TextView) page.findViewById(R.id.label1);
+                final ArrayList<GridItem> gi = new ArrayList<GridItem>();
+                gi.add(new GridItem("Pomiary", n+""));
+                gi.add(new GridItem("Odległość", Math.round(all)+""));
+                gi.add(new GridItem("Pomiary", n+""));
+                gi.add(new GridItem("Odległość", Math.round(all)+""));
+                gi.add(new GridItem("Pomiary", n+""));
+                gi.add(new GridItem("Odległość", Math.round(all)+""));
+                gi.add(new GridItem("Pomiary", n+""));
+                gi.add(new GridItem("Odległość", Math.round(all)+""));
+
+                ViewTreeObserver vto = page.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+                {
+                    @Override
+                    public void onGlobalLayout()
+                    {
+                        GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
+                        GridView gv = (GridView)page.findViewById(R.id.gps_grid);
+                        ga.setCellHeight(page.getMeasuredHeight()/4);
+                        gv.setAdapter(ga);
+
+                        page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                });
+
+                /*TextView tv = (TextView) page.findViewById(R.id.label1);
                 tv.setText("Wykonano " + n + " pomiarów");
                 TextView tv2 = (TextView) page.findViewById(R.id.label2);
-                tv2.setText("Pokonano " + Math.round(all) + " metrów");
+                tv2.setText("Pokonano " + Math.round(all) + " metrów");*/
             }
 
             return page;
