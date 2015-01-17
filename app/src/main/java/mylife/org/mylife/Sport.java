@@ -256,59 +256,71 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
 
-            ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+            ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
-            if(!wynik.isEmpty()) {
-                int n = wynik.size();
-                float[] result = new float[3];
-                float all = 0;
+            final ArrayList<GridItem> gi = new ArrayList<GridItem>();
 
-                ArrayList<Double> xaxis = new ArrayList<Double>();
-                ArrayList<Double> yaxis = new ArrayList<Double>();
+            String[] data = {"-", "-", "-", "-"};
 
-                LocationModel last = wynik.get(0);
-                xaxis.add(0.0);
-                yaxis.add(0.0);
+            if(locs.size() > 1)
+            {
+                int n = locs.size();
+                double ratio = 18/5;
+                float[] storage = new float[3];
+                float distance = 0;
+                ArrayList<Double> speeds = new ArrayList<Double>();
 
-                for (int i = 1; i < n; i++) {
-                    LocationModel curr = wynik.get(i);
+                LocationModel last = locs.get(0);
 
-                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
-                    all += result[0];
+                for (int i = 1; i < n; i++)
+                {
+                    LocationModel curr = locs.get(i);
+
+                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), storage);
+                    distance += storage[0];
+                    double speed = ((double)storage[0] / (curr.getDateTimestamp()-last.getDateTimestamp()))*1000;
+                    speeds.add(speed*ratio);
 
                     last = curr;
                 }
 
-                final ArrayList<GridItem> gi = new ArrayList<GridItem>();
-                gi.add(new GridItem("Pomiary", n+""));
-                gi.add(new GridItem("Odległość", Math.round(all)+""));
-                gi.add(new GridItem("Pomiary", n+""));
-                gi.add(new GridItem("Odległość", Math.round(all)+""));
-                gi.add(new GridItem("Pomiary", n+""));
-                gi.add(new GridItem("Odległość", Math.round(all)+""));
-                gi.add(new GridItem("Pomiary", n+""));
-                gi.add(new GridItem("Odległość", Math.round(all)+""));
+                data[2] = (double)(Math.round(ratio*((double)distance)/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())*1000))/100+" km/h";
+                data[3] = (double)(Math.round(distance*10))/100+" km";
 
-                ViewTreeObserver vto = page.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+                double min = speeds.get(0);
+                double max = speeds.get(0);
+
+                n = speeds.size();
+
+                for(int i = 1; i < n; i++)
                 {
-                    @Override
-                    public void onGlobalLayout()
-                    {
-                        GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
-                        GridView gv = (GridView)page.findViewById(R.id.gps_grid);
-                        ga.setCellHeight(page.getMeasuredHeight()/4);
-                        gv.setAdapter(ga);
+                    if(speeds.get(i) < min) min = speeds.get(i);
+                    if(speeds.get(i) > max) max = speeds.get(i);
+                }
 
-                        page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    }
-                });
-
-                /*TextView tv = (TextView) page.findViewById(R.id.label1);
-                tv.setText("Wykonano " + n + " pomiarów");
-                TextView tv2 = (TextView) page.findViewById(R.id.label2);
-                tv2.setText("Pokonano " + Math.round(all) + " metrów");*/
+                data[0] = (double)(Math.round(min*100))/100+" km/h";
+                data[1] = (double)(Math.round(max*100))/100+" km/h";
             }
+
+            gi.add(new GridItem("Min. prędkość", data[0]));
+            gi.add(new GridItem("Max. prędkość", data[1]));
+            gi.add(new GridItem("Srednia prędkość", data[2]));
+            gi.add(new GridItem("Dystans", data[3]));
+
+            ViewTreeObserver vto = page.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
+                    GridView gv = (GridView)page.findViewById(R.id.gps_grid);
+                    ga.setCellHeight(page.getMeasuredHeight()/4);
+                    gv.setAdapter(ga);
+
+                    page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            });
 
             return page;
         }
