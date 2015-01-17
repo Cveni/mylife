@@ -62,7 +62,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.sport_menu, menu);
@@ -76,9 +76,9 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         // as you specify a parent activity in AndroidManifest.xml.
         int ids = item.getItemId();
 
-        /*SportPage sp = (SportPage)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+        SportPage sp = (SportPage)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
         sp.update("Here comes update!");
-        mSectionsPagerAdapter.notifyDataSetChanged();*/
+        mSectionsPagerAdapter.notifyDataSetChanged();
 
         //noinspection SimplifiableIfStatement
         if (ids == R.id.action_settings) {
@@ -86,7 +86,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
@@ -255,11 +255,9 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             final View page = inflater.inflate(R.layout.sport_page5, container, false);
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
-
             ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
-
             String[] data = {"-", "-", "-", "-"};
 
             if(locs.size() > 1)
@@ -327,7 +325,37 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         public View page6(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View page = inflater.inflate(R.layout.sport_page6, container, false);
+            final View page = inflater.inflate(R.layout.sport_page6, container, false);
+
+            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+            ArrayList<PulseModel> puls = bm.getActivityPulses(getArguments().getLong("id"));
+
+            final ArrayList<GridItem> gi = new ArrayList<GridItem>();
+            String[] data = {"-", "-", "-"};
+
+            if(puls.size() > 0)
+            {
+                // somethin' to happen
+            }
+
+            gi.add(new GridItem("Dana 1", data[0]));
+            gi.add(new GridItem("Dana 2", data[1]));
+            gi.add(new GridItem("Dana 3", data[2]));
+
+            ViewTreeObserver vto = page.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
+                    GridView gv = (GridView)page.findViewById(R.id.pulse_grid);
+                    ga.setCellHeight(page.getMeasuredHeight()/4);
+                    gv.setAdapter(ga);
+
+                    page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            });
 
             return page;
         }

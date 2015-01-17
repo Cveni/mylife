@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -170,6 +169,33 @@ public class BaseManager
         close();
     }
 
+    public ArrayList<PulseModel> getActivityPulses(long activityIndex)
+    {
+        ArrayList<PulseModel> pulses = new ArrayList<PulseModel>();
+        String[] cursorColumns = {BaseHelper.PULSE_COLUMN_VALUE, BaseHelper.PULSE_COLUMN_DATE};
+        String[] cursorWhereArgs = {String.valueOf(activityIndex)};
+
+        open();
+
+        Cursor pulsesCursor = database.query(BaseHelper.TABLE_NAME_PULSE, cursorColumns,
+                BaseHelper.PULSE_COLUMN_ACTIVITY_ID + " = ?", cursorWhereArgs,
+                null, null, null, null);
+
+        if(pulsesCursor.moveToFirst())
+        {
+            do
+            {
+                pulses.add(new PulseModel(pulsesCursor.getInt(pulsesCursor.getColumnIndex(BaseHelper.PULSE_COLUMN_VALUE)),
+                        pulsesCursor.getDouble(pulsesCursor.getColumnIndex(BaseHelper.PULSE_COLUMN_DATE))));
+            } while(pulsesCursor.moveToNext());
+        }
+
+        pulsesCursor.close();
+        close();
+
+        return pulses;
+    }
+
     public void saveSteps(double steps)
     {
         ContentValues values = new ContentValues();
@@ -183,7 +209,7 @@ public class BaseManager
         close();
     }
 
-    public ArrayList<Step> getStepsByDay(Calendar day)
+    public ArrayList<StepModel> getStepsByDay(Calendar day)
     {
         day.set(Calendar.HOUR, 0);
         day.set(Calendar.MINUTE, 0);
@@ -197,7 +223,7 @@ public class BaseManager
         day.set(Calendar.MILLISECOND, 499);
         long dayEndTimestamp = day.getTimeInMillis();
 
-        ArrayList<Step> steps = new ArrayList<Step>();
+        ArrayList<StepModel> steps = new ArrayList<StepModel>();
 
         String[] cursorColumns = {BaseHelper.STEPS_COLUMN_DATE, BaseHelper.STEPS_COLUMN_VALUE};
         String[] cursorWhereArgs = {String.valueOf(dayStartTimestamp), String.valueOf(dayEndTimestamp)};
@@ -210,7 +236,7 @@ public class BaseManager
         {
             do
             {
-                steps.add(new Step(stepsCursor.getLong(stepsCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_DATE)),
+                steps.add(new StepModel(stepsCursor.getLong(stepsCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_DATE)),
                         stepsCursor.getDouble(stepsCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_VALUE))));
             } while(stepsCursor.moveToNext());
         }

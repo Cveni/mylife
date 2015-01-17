@@ -6,12 +6,12 @@ import java.util.GregorianCalendar;
 /**
  * Created by szymon on 13.01.15.
  */
-public class Step
+public class StepModel
 {
     private Calendar date;
     private double value;
 
-    public Step(long timestamp, double value)
+    public StepModel(long timestamp, double value)
     {
         this.value = value;
         date = GregorianCalendar.getInstance();
