@@ -258,6 +258,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
+            String[] titles = getResources().getStringArray(R.array.gps_stats_titles);
             String[] data = {"-", "-", "-", "-"};
 
             if(locs.size() > 1)
@@ -277,13 +278,13 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), storage);
                     distance += storage[0];
                     double speed = ((double)storage[0] / (curr.getDateTimestamp()-last.getDateTimestamp()))*1000;
-                    speeds.add(speed*ratio);
+                    speeds.add(ratio*speed);
 
                     last = curr;
                 }
 
-                data[2] = (double)(Math.round(ratio*((double)distance)/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())*1000))/100+" km/h";
-                data[3] = (double)(Math.round(distance*10))/100+" km";
+                data[2] = (double)(Math.round(ratio*((double)distance)/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())*100000))/100+" km/h";
+                data[3] = (double)(Math.round(distance/10))/100+" km";
 
                 double min = speeds.get(0);
                 double max = speeds.get(0);
@@ -300,10 +301,10 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 data[1] = (double)(Math.round(max*100))/100+" km/h";
             }
 
-            gi.add(new GridItem("Min. prędkość", data[0]));
-            gi.add(new GridItem("Max. prędkość", data[1]));
-            gi.add(new GridItem("Srednia prędkość", data[2]));
-            gi.add(new GridItem("Dystans", data[3]));
+            for(int i = 0; i < titles.length; i++)
+            {
+                gi.add(new GridItem(titles[i], data[i]));
+            }
 
             ViewTreeObserver vto = page.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()

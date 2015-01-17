@@ -22,4 +22,11 @@
     <string name="title_activity_settings">Ustawienia</string>
     <string name="settings_action_reset">Domyślne</string>
 
+    <string-array name="gps_stats_titles">
+        <item>Min. prędkość</item>
+        <item>Max. prędkość</item>
+        <item>Śr. prędkość</item>
+        <item>Dystans</item>
+    </string-array>
+
 </resources>
