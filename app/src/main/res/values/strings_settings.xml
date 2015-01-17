@@ -66,6 +66,8 @@
     <string name="settings_user_weight_key">user_weight</string>
     <string name="settings_user_height_title">Wzrost (w cm)</string>
     <string name="settings_user_height_key">user_height</string>
+    <string name="settings_user_age_title">Wiek (w latach)</string>
+    <string name="settings_user_age_key">user_age</string>
     <string name="settings_user_gender_title">Płeć</string>
     <string name="settings_user_gender_key">user_gender</string>
     <string-array name="settings_user_gender_items">
@@ -75,6 +77,18 @@
     <string-array name="settings_user_gender_values">
         <item>M</item>
         <item>K</item>
+    </string-array>
+    <string name="settings_user_acti_title">Dzienna aktywność fizyczna</string>
+    <string name="settings_user_acti_key">user_acti</string>
+    <string-array name="settings_user_acti_items">
+        <item>Mała</item>
+        <item>Średnia</item>
+        <item>Duża</item>
+    </string-array>
+    <string-array name="settings_user_acti_values">
+        <item>M</item>
+        <item>S</item>
+        <item>D</item>
     </string-array>
 
 </resources>
