@@ -64,8 +64,6 @@ public class Settings extends PreferenceActivity {
             });
             alert.show();
 
-
-
             return true;
         }
 

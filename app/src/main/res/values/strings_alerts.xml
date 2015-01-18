@@ -6,5 +6,8 @@
     <string name="settings_alert_default_title">Ustawienia domyślne</string>
     <string name="settings_alert_default_msg">Przywrócić domyślne wartości ustawień?</string>
     <string name="settings_alert_default_toast">Przywrócono domyślne ustawienia</string>
+    <string name="settings_alert_step_title">Licznik kroków</string>
+    <string name="settings_alert_step_msg">Twoje urządzenie nie posiada wbudowanego licznika kroków!</string>
+    <string name="settings_alert_step_toast">Zmiany zostaną wprowadzone po ponownym uruchomieniu urządzenia</string>
 
 </resources>

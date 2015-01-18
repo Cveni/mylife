@@ -1,11 +1,17 @@
 package mylife.org.mylife;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.preference.Preference;
 import android.preference.SwitchPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Cveni on 2015-01-06.
@@ -13,16 +19,62 @@ import android.widget.TextView;
 
 public class SwitchPreferenceNew extends SwitchPreference
 {
-    public SwitchPreferenceNew(Context context, AttributeSet attrs, int defStyle) {
+    public SwitchPreferenceNew(Context context, AttributeSet attrs, int defStyle)
+    {
         super(context, attrs, defStyle);
+        stepSettingsListener();
     }
 
-    public SwitchPreferenceNew(Context context, AttributeSet attrs) {
+    public SwitchPreferenceNew(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
+        stepSettingsListener();
     }
 
-    public SwitchPreferenceNew(Context context) {
+    public SwitchPreferenceNew(Context context)
+    {
         super(context);
+        stepSettingsListener();
+    }
+
+    public void stepSettingsListener()
+    {
+        setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if(preference.getKey().equals(getContext().getResources().getString(R.string.settings_step_use_key)))
+                {
+                    SensorManager sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
+                    Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+                    if(countSensor == null)
+                    {
+                        AlertDialog alert = new AlertDialog.Builder(getContext()).create();
+                        alert.setTitle(getContext().getResources().getString(R.string.settings_alert_step_title));
+                        alert.setMessage(getContext().getResources().getString(R.string.settings_alert_step_msg));
+                        alert.setButton(DialogInterface.BUTTON_POSITIVE, getContext().getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            { }
+                        });
+                        alert.show();
+
+                        return false;
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), R.string.settings_alert_step_toast, Toast.LENGTH_LONG).show();
+
+                        return true;
+                    }
+                }
+
+                return true;
+            }
+        });
     }
 
     protected void onBindView(View v)
