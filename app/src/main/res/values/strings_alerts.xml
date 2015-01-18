@@ -2,6 +2,10 @@
 
     <string name="alert_positive">OK</string>
     <string name="alert_negative">Anuluj</string>
+    <string name="alert_settings">Ustawienia</string>
+
+    <string name="main_alert_gps_title">GPS</string>
+    <string name="main_alert_gps_msg">Określanie lokalizacji przez GPS jest wyłączone. Przejść do ustawień urządzenia?</string>
 
     <string name="settings_alert_default_title">Ustawienia domyślne</string>
     <string name="settings_alert_default_msg">Przywrócić domyślne wartości ustawień?</string>
