@@ -16,22 +16,25 @@ import android.widget.TextView;
 
 public class EditTextPreferenceNew extends EditTextPreference
 {
-    public EditTextPreferenceNew(Context context, AttributeSet attrs, int defStyle) {
+    public EditTextPreferenceNew(Context context, AttributeSet attrs, int defStyle)
+    {
         super(context, attrs, defStyle);
-        init();
+        setSummaryChanger();
     }
 
-    public EditTextPreferenceNew(Context context, AttributeSet attrs) {
+    public EditTextPreferenceNew(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
-        init();
+        setSummaryChanger();
     }
 
-    public EditTextPreferenceNew(Context context) {
+    public EditTextPreferenceNew(Context context)
+    {
         super(context);
-        init();
+        setSummaryChanger();
     }
 
-    private void init()
+    private void setSummaryChanger()
     {
         setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override

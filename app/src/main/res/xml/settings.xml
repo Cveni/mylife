@@ -1,6 +1,8 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/settings_category_gps">
+    <PreferenceCategory
+        android:title="@string/settings_category_gps">
 
         <mylife.org.mylife.SwitchPreferenceNew
             android:key="@string/settings_gps_use_key"
@@ -20,7 +22,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_category_pulse">
+    <PreferenceCategory
+        android:title="@string/settings_category_pulse">
 
         <mylife.org.mylife.SwitchPreferenceNew
             android:key="@string/settings_pulse_use_key"
@@ -40,7 +43,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_category_step">
+    <PreferenceCategory
+        android:title="@string/settings_category_step">
 
         <mylife.org.mylife.SwitchPreferenceNew
             android:key="@string/settings_step_use_key"
@@ -60,7 +64,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_category_user">
+    <PreferenceCategory
+        android:title="@string/settings_category_user">
 
         <mylife.org.mylife.ListPreferenceNew
             android:key="@string/settings_user_gender_key"

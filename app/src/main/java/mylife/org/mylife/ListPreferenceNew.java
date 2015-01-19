@@ -19,53 +19,56 @@ import android.widget.Toast;
 
 public class ListPreferenceNew extends ListPreference
 {
-
     public ListPreferenceNew(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        stepSettingsListener();
+        if(getKey().equals(context.getResources().getString(R.string.settings_step_freq_key))) setStepSettingsListener();
     }
 
     public ListPreferenceNew(Context context)
     {
         super(context);
-        stepSettingsListener();
+        if(getKey().equals(context.getResources().getString(R.string.settings_step_freq_key))) setStepSettingsListener();
     }
 
-    public void stepSettingsListener()
+    public void setStepSettingsListener()
     {
+        setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                SensorManager sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
+                Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+                if(countSensor == null)
+                {
+                    AlertDialog alert = new AlertDialog.Builder(getContext()).create();
+                    alert.setTitle(getContext().getResources().getString(R.string.settings_alert_step_title));
+                    alert.setMessage(getContext().getResources().getString(R.string.settings_alert_step_msg));
+                    alert.setButton(DialogInterface.BUTTON_POSITIVE, getContext().getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        { }
+                    });
+
+                    getDialog().dismiss();
+                    alert.show();
+
+                    return true;
+                }
+
+                return true;
+            }
+        });
+
         setOnPreferenceChangeListener(new OnPreferenceChangeListener()
         {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                if(preference.getKey().equals(getContext().getResources().getString(R.string.settings_step_freq_key)))
-                {
-                    SensorManager sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
-                    Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
-                    if(countSensor == null)
-                    {
-                        AlertDialog alert = new AlertDialog.Builder(getContext()).create();
-                        alert.setTitle(getContext().getResources().getString(R.string.settings_alert_step_title));
-                        alert.setMessage(getContext().getResources().getString(R.string.settings_alert_step_msg));
-                        alert.setButton(DialogInterface.BUTTON_POSITIVE, getContext().getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            { }
-                        });
-                        alert.show();
-
-                        return false;
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(), R.string.settings_alert_step_toast, Toast.LENGTH_LONG).show();
-
-                        return true;
-                    }
-                }
+                Toast.makeText(getContext(), R.string.settings_alert_step_toast, Toast.LENGTH_LONG).show();
 
                 return true;
             }
