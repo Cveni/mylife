@@ -13,5 +13,7 @@
     <string name="settings_alert_step_title">Licznik kroków</string>
     <string name="settings_alert_step_msg">Twoje urządzenie nie posiada wbudowanego licznika kroków!</string>
     <string name="settings_alert_step_toast">Zmiany zostaną wprowadzone po ponownym uruchomieniu urządzenia</string>
+    <string name="settings_alert_gpspulse_title">GPS lub pulsometr</string>
+    <string name="settings_alert_gpspulse_msg">Do rejestracji aktywności sportowej należy wybrać co najmniej jeden z podanych czujników!</string>
 
 </resources>
