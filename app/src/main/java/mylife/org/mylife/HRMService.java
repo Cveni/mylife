@@ -27,12 +27,12 @@ import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IVersionAndMod
 import com.dsi.ant.plugins.antplus.pccbase.AsyncScanController.AsyncScanResultDeviceInfo;
 import com.dsi.ant.plugins.antplus.pccbase.AsyncScanController.IAsyncScanResultReceiver;
 
-import android.app.AlertDialog;
+//import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
+//import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
+//import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -309,7 +309,7 @@ public class HRMService extends Service {
                             Toast.LENGTH_SHORT).show();
                     break;
                 case DEPENDENCY_NOT_INSTALLED:
-                    AlertDialog.Builder adlgBldr = new AlertDialog.Builder(
+                    /*AlertDialog.Builder adlgBldr = new AlertDialog.Builder(
                             HRMService.this);
                     adlgBldr.setTitle("Missing Dependency");
                     adlgBldr.setMessage("The required service\n\""
@@ -342,7 +342,7 @@ public class HRMService extends Service {
 
                     final AlertDialog waitDialog = adlgBldr.create();
                     waitDialog.show();
-                    break;
+                    break;*/
                 case USER_CANCELLED:
                     Toast.makeText(HRMService.this,
                             "Cancelled. Do Menu->Reset.",

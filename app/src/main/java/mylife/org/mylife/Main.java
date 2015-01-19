@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
-//import android.view.Menu;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,6 +21,8 @@ public class Main extends Activity
     GPSManager gps;
     BaseManager bm;
     StepCounter sc;
+    HRMManager pm;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,27 +34,9 @@ public class Main extends Activity
         bm = new BaseManager(getApplicationContext());
         sc = new StepCounter();
         sc.start(getApplicationContext());
+        pm = new HRMManager(getApplicationContext());
+        id = 1;
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings)
-        {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     public void btn1(View v)
     {
@@ -78,16 +60,17 @@ public class Main extends Activity
 
     public void akcja(View v)
     {
-        gps.start(bm.createNewActivity("", ""));
+        id = bm.createNewActivity("", "");
+        pm.start(id);
 
         Toast.makeText(getApplicationContext(), "Rozpoczęto rejestrację aktywności", Toast.LENGTH_LONG).show();
     }
 
     public void akcja2(View v)
     {
-        gps.stop();
+        pm.stop();
 
-        Toast.makeText(getApplicationContext(), "Zakończono rejestrację aktywności", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Zakończono rejestrację aktywności (wykonano "+bm.getActivityLocations(id).size()+" pomiarów)", Toast.LENGTH_LONG).show();
     }
 
     public void akcja3(View v)
