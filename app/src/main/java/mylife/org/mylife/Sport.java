@@ -23,6 +23,7 @@ import android.widget.GridView;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
+import com.google.android.gms.maps.MapFragment;
 
 public class Sport extends FragmentActivity implements ActionBar.TabListener
 {
@@ -151,6 +152,8 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
     public static class SportPage extends Fragment implements Updatable
     {
+        public static View map;
+
         public static SportPage newInstance(long id, int page)
         {
             SportPage fragment = new SportPage();
@@ -197,9 +200,19 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         public View page2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View page = inflater.inflate(R.layout.sport_page2, container, false);
+            if (map != null)
+            {
+                ViewGroup parent = (ViewGroup)map.getParent();
+                if (parent != null) parent.removeView(map);
+            }
 
-            return page;
+            try
+            {
+                map = inflater.inflate(R.layout.sport_page2, container, false);
+            }
+            catch (Exception e) { }
+
+            return map;
         }
 
         public View page3(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
