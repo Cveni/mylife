@@ -29,6 +29,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.LatLngBounds.Builder;
 
 public class Sport extends FragmentActivity implements ActionBar.TabListener
 {
@@ -292,12 +299,28 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
                 if(!wynik.isEmpty())
                 {
+                    private LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                     ArrayList<LatLng> routePoints = new ArrayList<LatLng>();
                     for(LocationModel location: wynik)
+                    {
                         routePoints.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                        bounds.include(new LatLng(location.getLatitude(), location.getLongitude()));
+                    }
 
                     Polyline route = mapFragment.addPolyline(new PolylineOptions());
                     route.setPoints(routePoints);
+
+                    LatLng startPosition = new LatLng(wynik.get(0).getLatitude(),
+                        wynik.get(0).getLongitude());
+                    mapFragment.addMarker(new MarkerOptions().position(startPosition)
+                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))));
+
+                    LatLng finishPosition = new LatLng(wynik.get(wynik.size()-1).getLatitude(),
+                            wynik.get(wynik.size()-1).getLongitude());
+                    mapFragment.addMarker(new MarkerOptions().position(finishPosition)
+                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+
+                    mapFragment.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
                 }
             }
             catch (Exception e) { }
