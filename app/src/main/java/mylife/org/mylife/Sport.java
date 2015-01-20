@@ -24,6 +24,9 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Polyline;
 
 public class Sport extends FragmentActivity implements ActionBar.TabListener
 {
@@ -209,6 +212,22 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             try
             {
                 map = inflater.inflate(R.layout.sport_page2, container, false);
+
+                GoogleMap mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.gps_map))
+                        .getMap();
+
+                BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+                ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+
+                if(!wynik.isEmpty())
+                {
+                    ArrayList<LatLng> routePoints = new ArrayList<>();
+                    for(LocationModel location: wynik)
+                        routePoints.add(new LatLng(location.getLatitude(), location.getLongitude()));
+
+                    Polyline route = mapFragment.addPolyline(new PolylineOptions());
+                    route.setPoints(routePoints);
+                }
             }
             catch (Exception e) { }
 
