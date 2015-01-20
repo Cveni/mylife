@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
@@ -320,14 +319,6 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 float all = 0;
 
                 final XYPlot plot = (XYPlot) page.findViewById(R.id.gpsPlot);
-                plot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Jestem", Toast.LENGTH_LONG).show();
-                        plot.setScaleX(4);
-                        plot.redraw();
-                    }
-                });
                 ArrayList<Double> xaxis = new ArrayList<Double>();
                 ArrayList<Double> yaxis = new ArrayList<Double>();
 
