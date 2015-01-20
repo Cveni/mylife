@@ -19,11 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
+
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
@@ -122,7 +125,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         @Override
         public int getCount()
         {
-            return 6;
+            return 5;
         }
 
         @Override
@@ -146,8 +149,6 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     return getString(R.string.sport_tab4);
                 case 4:
                     return getString(R.string.sport_tab5);
-                case 5:
-                    return getString(R.string.sport_tab6);
             }
             return null;
         }
@@ -187,10 +188,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     return page4(inflater, container, savedInstanceState);
                 case 4:
                     return page5(inflater, container, savedInstanceState);
-                case 5:
-                    return page6(inflater, container, savedInstanceState);
             }
-
             return null;
         }
 
@@ -203,88 +201,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         public View page2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            if (map != null)
-            {
-                ViewGroup parent = (ViewGroup)map.getParent();
-                if (parent != null) parent.removeView(map);
-            }
-
-            try
-            {
-                map = inflater.inflate(R.layout.sport_page2, container, false);
-
-                GoogleMap mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.gps_map))
-                        .getMap();
-
-                BaseManager bm = new BaseManager(getActivity().getApplicationContext());
-                ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
-
-                if(!wynik.isEmpty())
-                {
-                    ArrayList<LatLng> routePoints = new ArrayList<>();
-                    for(LocationModel location: wynik)
-                        routePoints.add(new LatLng(location.getLatitude(), location.getLongitude()));
-
-                    Polyline route = mapFragment.addPolyline(new PolylineOptions());
-                    route.setPoints(routePoints);
-                }
-            }
-            catch (Exception e) { }
-
-            return map;
-        }
-
-        public View page3(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            View page = inflater.inflate(R.layout.sport_page3, container, false);
-
-            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
-
-            ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
-
-            if(!wynik.isEmpty()) {
-                int n = wynik.size();
-                float[] result = new float[3];
-                float all = 0;
-
-                XYPlot plot = (XYPlot) page.findViewById(R.id.gpsPlot);
-                ArrayList<Double> xaxis = new ArrayList<Double>();
-                ArrayList<Double> yaxis = new ArrayList<Double>();
-
-                LocationModel last = wynik.get(0);
-                xaxis.add(0.0);
-                yaxis.add(0.0);
-
-                for (int i = 1; i < n; i++) {
-                    LocationModel curr = wynik.get(i);
-
-                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
-                    all += result[0];
-
-                    xaxis.add((double) all);
-                    yaxis.add(((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000);
-
-                    last = curr;
-                }
-
-                SimpleXYSeries series = new SimpleXYSeries(xaxis, yaxis, "Predkosc");
-                LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
-                plot.addSeries(series, seriesFormat);
-            }
-
-            return page;
-        }
-
-        public View page4(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            View page = inflater.inflate(R.layout.sport_page4, container, false);
-
-            return page;
-        }
-
-        public View page5(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            final View page = inflater.inflate(R.layout.sport_page5, container, false);
+            final View page = inflater.inflate(R.layout.sport_page2, container, false);
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
             ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
@@ -356,39 +273,91 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             return page;
         }
 
-        public View page6(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public View page3(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            final View page = inflater.inflate(R.layout.sport_page6, container, false);
-
-            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
-            ArrayList<PulseModel> puls = bm.getActivityPulses(getArguments().getLong("id"));
-
-            final ArrayList<GridItem> gi = new ArrayList<GridItem>();
-            String[] data = {"-", "-", "-"};
-
-            if(puls.size() > 0)
+            if (map != null)
             {
-                // somethin' to happen
+                ViewGroup parent = (ViewGroup)map.getParent();
+                if (parent != null) parent.removeView(map);
             }
 
-            gi.add(new GridItem("Dana 1", data[0]));
-            gi.add(new GridItem("Dana 2", data[1]));
-            gi.add(new GridItem("Dana 3", data[2]));
-
-            ViewTreeObserver vto = page.getViewTreeObserver();
-            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+            try
             {
-                @Override
-                public void onGlobalLayout()
-                {
-                    GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
-                    GridView gv = (GridView)page.findViewById(R.id.pulse_grid);
-                    ga.setCellHeight(page.getMeasuredHeight()/4);
-                    gv.setAdapter(ga);
+                map = inflater.inflate(R.layout.sport_page3, container, false);
 
-                    page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                GoogleMap mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.gps_map))
+                        .getMap();
+
+                BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+                ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+
+                if(!wynik.isEmpty())
+                {
+                    ArrayList<LatLng> routePoints = new ArrayList<LatLng>();
+                    for(LocationModel location: wynik)
+                        routePoints.add(new LatLng(location.getLatitude(), location.getLongitude()));
+
+                    Polyline route = mapFragment.addPolyline(new PolylineOptions());
+                    route.setPoints(routePoints);
                 }
-            });
+            }
+            catch (Exception e) { }
+
+            return map;
+        }
+
+        public View page4(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View page = inflater.inflate(R.layout.sport_page4, container, false);
+
+            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+
+            ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+
+            if(!wynik.isEmpty()) {
+                int n = wynik.size();
+                float[] result = new float[3];
+                float all = 0;
+
+                final XYPlot plot = (XYPlot) page.findViewById(R.id.gpsPlot);
+                plot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Jestem", Toast.LENGTH_LONG).show();
+                        plot.setScaleX(4);
+                        plot.redraw();
+                    }
+                });
+                ArrayList<Double> xaxis = new ArrayList<Double>();
+                ArrayList<Double> yaxis = new ArrayList<Double>();
+
+                LocationModel last = wynik.get(0);
+                xaxis.add(0.0);
+                yaxis.add(0.0);
+
+                for (int i = 1; i < n; i++) {
+                    LocationModel curr = wynik.get(i);
+
+                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
+                    all += result[0];
+
+                    xaxis.add((double) all);
+                    yaxis.add(((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000);
+
+                    last = curr;
+                }
+
+                SimpleXYSeries series = new SimpleXYSeries(xaxis, yaxis, "Predkosc");
+                LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+                plot.addSeries(series, seriesFormat);
+            }
+
+            return page;
+        }
+
+        public View page5(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View page = inflater.inflate(R.layout.sport_page5, container, false);
 
             return page;
         }
