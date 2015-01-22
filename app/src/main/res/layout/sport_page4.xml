@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     tools:context="mylife.org.mylife.Sport$SportPage">
 
-    <com.androidplot.xy.XYPlot
-        android:id="@+id/gpsPlot"
+    <com.androidplot.xy.XYPlotZoomPan
+        android:id="@+id/gps_plot"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

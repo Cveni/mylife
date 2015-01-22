@@ -6,12 +6,14 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,20 +24,17 @@ import android.widget.GridView;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.XYPlot;
+import com.androidplot.xy.XYPlotZoomPan;
 
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.LatLngBounds.Builder;
 
 public class Sport extends FragmentActivity implements ActionBar.TabListener
 {
@@ -160,7 +159,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         }
     }
 
-    public static class SportPage extends Fragment implements Updatable
+    public static class SportPage extends Fragment /*implements Updatable*/
     {
         public static View map;
 
@@ -291,7 +290,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             {
                 map = inflater.inflate(R.layout.sport_page3, container, false);
 
-                GoogleMap mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.gps_map))
+                final GoogleMap mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.gps_map))
                         .getMap();
 
                 BaseManager bm = new BaseManager(getActivity().getApplicationContext());
@@ -299,7 +298,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
                 if(!wynik.isEmpty())
                 {
-                    private LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+                    final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                     ArrayList<LatLng> routePoints = new ArrayList<LatLng>();
                     for(LocationModel location: wynik)
                     {
@@ -307,23 +306,34 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                         bounds.include(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
 
-                    Polyline route = mapFragment.addPolyline(new PolylineOptions());
+                    Polyline route = mapFragment.addPolyline(new PolylineOptions().color(Color.BLUE));
                     route.setPoints(routePoints);
 
                     LatLng startPosition = new LatLng(wynik.get(0).getLatitude(),
                         wynik.get(0).getLongitude());
                     mapFragment.addMarker(new MarkerOptions().position(startPosition)
-                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))));
+                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title("Start"));
 
                     LatLng finishPosition = new LatLng(wynik.get(wynik.size()-1).getLatitude(),
                             wynik.get(wynik.size()-1).getLongitude());
                     mapFragment.addMarker(new MarkerOptions().position(finishPosition)
-                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("Finisz"));
 
-                    mapFragment.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
+                    ViewTreeObserver vto = map.getViewTreeObserver();
+                    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+                    {
+                        @Override
+                        public void onGlobalLayout()
+                        {
+                            mapFragment.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 75), 2000, null);
+
+                            map.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+                    });
                 }
             }
-            catch (Exception e) { }
+            catch (Exception e) {
+            Log.i("info", e.getMessage());}
 
             return map;
         }
@@ -341,27 +351,27 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 float[] result = new float[3];
                 float all = 0;
 
-                final XYPlot plot = (XYPlot) page.findViewById(R.id.gpsPlot);
-                ArrayList<Double> xaxis = new ArrayList<Double>();
-                ArrayList<Double> yaxis = new ArrayList<Double>();
+                final XYPlotZoomPan plot = (XYPlotZoomPan) page.findViewById(R.id.gps_plot);
+
+                ArrayList<Double> xAxis = new ArrayList<Double>();
+                ArrayList<Double> yAxis = new ArrayList<Double>();
 
                 LocationModel last = wynik.get(0);
-                xaxis.add(0.0);
-                yaxis.add(0.0);
 
-                for (int i = 1; i < n; i++) {
+                for (int i = 2; i < n; i++) {
                     LocationModel curr = wynik.get(i);
 
                     Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
                     all += result[0];
 
-                    xaxis.add((double) all);
-                    yaxis.add(((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000);
+                    double currY = ((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000;
+                    xAxis.add((double) all);
+                    yAxis.add(currY);
 
                     last = curr;
                 }
 
-                SimpleXYSeries series = new SimpleXYSeries(xaxis, yaxis, "Predkosc");
+                SimpleXYSeries series = new SimpleXYSeries(xAxis, yAxis, "Predkosc");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 plot.addSeries(series, seriesFormat);
             }
@@ -376,14 +386,14 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             return page;
         }
 
-        public void update(String data)
+        /*public void update(String data)
         {
             // soon
-        }
+        }*/
     }
 
-    public interface Updatable
+    /*public interface Updatable
     {
         public void update(String data);
-    }
+    }*/
 }
