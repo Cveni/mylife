@@ -22,10 +22,15 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridView;
 
+import com.androidplot.Plot;
+import com.androidplot.ui.AnchorPosition;
+import com.androidplot.ui.XLayoutStyle;
+import com.androidplot.ui.YLayoutStyle;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlotZoomPan;
 
+import com.androidplot.xy.XYStepMode;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -351,7 +356,8 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 float[] result = new float[3];
                 float all = 0;
 
-                final XYPlotZoomPan plot = (XYPlotZoomPan) page.findViewById(R.id.gps_plot);
+                final PlotExtended plot = (PlotExtended) page.findViewById(R.id.gps_plot);
+                plot.setLabels("Dystans (km)", "Prędkość (km/h)");
 
                 ArrayList<Double> xAxis = new ArrayList<Double>();
                 ArrayList<Double> yAxis = new ArrayList<Double>();
@@ -371,7 +377,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     last = curr;
                 }
 
-                SimpleXYSeries series = new SimpleXYSeries(xAxis, yAxis, "Predkosc");
+                SimpleXYSeries series = new SimpleXYSeries(xAxis, yAxis, null);
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 plot.addSeries(series, seriesFormat);
             }

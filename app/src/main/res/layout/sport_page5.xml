@@ -5,4 +5,9 @@
     android:layout_height="match_parent"
     tools:context="mylife.org.mylife.Sport$SportPage">
 
+    <mylife.org.mylife.PlotExtended
+        android:id="@+id/pulse_plot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
