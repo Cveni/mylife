@@ -46,4 +46,10 @@ public class GridAdapter extends ArrayAdapter<GridItem>
 
         return view;
     }
+
+    @Override
+    public boolean isEnabled(int position)
+    {
+        return false;
+    }
 }

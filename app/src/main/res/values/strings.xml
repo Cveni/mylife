@@ -51,6 +51,13 @@
         <item>Max. prędkość</item>
         <item>Śr. prędkość</item>
         <item>Dystans</item>
+        <item>Min. puls</item>
+        <item>Max. puls</item>
+        <item>Śr. puls</item>
+        <item>Kalorie</item>
     </string-array>
+    <string name="unit_kmh">km/h</string>
+    <string name="unit_km">km</string>
+    <string name="unit_bpm">bpm</string>
 
 </resources>

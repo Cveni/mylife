@@ -15,8 +15,8 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+//import android.view.Menu;
+//import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -42,21 +42,23 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
     ViewPager mViewPager;
     SectionsPagerAdapter mSectionsPagerAdapter;
     long id;
+    int device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        id = getIntent().getLongExtra("id", -1);
+        id = getIntent().getLongExtra("id", 1);
+        device = (int)getIntent().getLongExtra("device", 0);
 
         setContentView(R.layout.sport);
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setTitle(getIntent().getStringExtra("name"));
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-
         mViewPager = (ViewPager)findViewById(R.id.sportPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -125,13 +127,22 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         @Override
         public Fragment getItem(int position)
         {
-            return SportPage.newInstance(id, position);
+            return SportPage.newInstance(id, device, position);
         }
 
         @Override
         public int getCount()
         {
-            return 5;
+            switch(device)
+            {
+                case 0:
+                    return 4;
+                case 1:
+                    return 3;
+                case 2:
+                    return 5;
+            }
+            return 4;
         }
 
         @Override
@@ -150,7 +161,15 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 case 1:
                     return getString(R.string.sport_tab2);
                 case 2:
-                    return getString(R.string.sport_tab3);
+                    switch(device)
+                    {
+                        case 0:
+                            return getString(R.string.sport_tab3);
+                        case 1:
+                            return getString(R.string.sport_tab5);
+                        case 2:
+                            return getString(R.string.sport_tab3);
+                    }
                 case 3:
                     return getString(R.string.sport_tab4);
                 case 4:
@@ -164,11 +183,12 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
     {
         public static View map;
 
-        public static SportPage newInstance(long id, int page)
+        public static SportPage newInstance(long id, int device, int page)
         {
             SportPage fragment = new SportPage();
             Bundle args = new Bundle();
             args.putLong("id", id);
+            args.putInt("device", device);
             args.putInt("page", page);
             fragment.setArguments(args);
 
@@ -211,17 +231,19 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
             ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
+            ArrayList<PulseModel> pulse = bm.getActivityPulses(getArguments().getLong("id"));
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
             String[] titles = getResources().getStringArray(R.array.gps_stats_titles);
-            String[] data = {"-", "-", "-", "-"};
+            String[] data = {"-", "-", "-", "-", "-", "-", "-", "-"};
 
-            if(locs.size() > 1)
+            int device = getArguments().getInt("device");
+
+            if((device == 0 || device == 2) && !locs.isEmpty())
             {
                 int n = locs.size();
-                double ratio = 18/5;
-                float[] storage = new float[3];
-                float distance = 0;
+                float[] result = new float[3];
+                float dist = 0;
                 ArrayList<Double> speeds = new ArrayList<Double>();
 
                 LocationModel last = locs.get(0);
@@ -230,30 +252,70 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 {
                     LocationModel curr = locs.get(i);
 
-                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), storage);
-                    distance += storage[0];
-                    double speed = ((double)storage[0] / (curr.getDateTimestamp()-last.getDateTimestamp()))*1000;
-                    speeds.add(ratio*speed);
+                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
+                    dist += result[0];
+                    double speed = ((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000;
+                    speeds.add(speed);
 
                     last = curr;
                 }
 
-                data[2] = (double)(Math.round(ratio*((double)distance)/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())*100000))/100+" km/h";
-                data[3] = (double)(Math.round(distance/10))/100+" km";
+                double distTotal = (double)dist;
+                data[3] = (double)(Math.round(distTotal/10)) / 100+" "+getResources().getString(R.string.unit_km);
 
-                double min = speeds.get(0);
-                double max = speeds.get(0);
+                if(!speeds.isEmpty())
+                {
+                    double avgSpeed = (distTotal/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())) * 1000;
+                    data[2] = (double)(Math.round(avgSpeed*100*speedRatio)) / 100+" "+getResources().getString(R.string.unit_kmh);
 
-                n = speeds.size();
+                    double minSpeed = speeds.get(0);
+                    double maxSpeed = speeds.get(0);
+
+                    int o = speeds.size();
+
+                    for(int i = 1; i < o; i++)
+                    {
+                        if(speeds.get(i) < minSpeed) minSpeed = speeds.get(i);
+                        if(speeds.get(i) > maxSpeed) maxSpeed = speeds.get(i);
+                    }
+
+                    data[0] = (double)(Math.round(minSpeed*100*speedRatio)) / 100+" "+getResources().getString(R.string.unit_kmh);
+                    data[1] = (double)(Math.round(maxSpeed*100*speedRatio)) / 100+" "+getResources().getString(R.string.unit_kmh);
+                }
+            }
+
+            if((device == 1 || device == 2) && !pulse.isEmpty())
+            {
+                int n = pulse.size();
+                PulseModel last = pulse.get(0);
+
+                int minPulse = last.getValue();
+                int maxPulse = last.getValue();
+
+                double all = 0;
 
                 for(int i = 1; i < n; i++)
                 {
-                    if(speeds.get(i) < min) min = speeds.get(i);
-                    if(speeds.get(i) > max) max = speeds.get(i);
+                    PulseModel curr = pulse.get(i);
+
+                    if(curr.getValue() < minPulse) minPulse = curr.getValue();
+                    if(curr.getValue() > maxPulse) maxPulse = curr.getValue();
+
+                    all += last.getValue()*(curr.getDateTimestamp()-last.getDateTimestamp());
+
+                    last = curr;
                 }
 
-                data[0] = (double)(Math.round(min*100))/100+" km/h";
-                data[1] = (double)(Math.round(max*100))/100+" km/h";
+                if(n > 1)
+                {
+                    double avgPulse = (all + (1.0 / (double)(n-1)) * last.getValue() * (last.getDateTimestamp() - pulse.get(0).getDateTimestamp()))
+                            / (((double)n / (double)(n-1)) * (last.getDateTimestamp() - pulse.get(0).getDateTimestamp()));
+
+                    data[6] = (double)Math.round(avgPulse*10) / 10+" "+getResources().getString(R.string.unit_bpm);
+                }
+
+                data[4] = minPulse+" "+getResources().getString(R.string.unit_bpm);
+                data[5] = maxPulse+" "+getResources().getString(R.string.unit_bpm);
             }
 
             for(int i = 0; i < titles.length; i++)

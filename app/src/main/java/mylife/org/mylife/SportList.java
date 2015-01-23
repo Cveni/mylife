@@ -3,8 +3,8 @@ package mylife.org.mylife;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+//import android.view.Menu;
+//import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,7 +20,8 @@ public class SportList extends Activity {
 
         ListView lv = (ListView)findViewById(R.id.sport_list);
         lv.setAdapter(new SportListAdapter(this, R.layout.sport_list_item, bm.getActivitiesInformation()));
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
@@ -28,6 +29,8 @@ public class SportList extends Activity {
 
                 Intent i = new Intent(getApplicationContext(), Sport.class);
                 i.putExtra("id", am.getId());
+                i.putExtra("device", am.getDevice());
+                i.putExtra("name", am.getName());
                 startActivity(i);
             }
         });
@@ -59,7 +62,7 @@ public class SportList extends Activity {
         }*/
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.sport_list_menu, menu);
@@ -79,5 +82,5 @@ public class SportList extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

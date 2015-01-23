@@ -1,7 +1,7 @@
 package mylife.org.mylife;
 
 import android.content.Context;
-import android.util.SparseBooleanArray;
+//import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,7 @@ public class SportListAdapter extends ArrayAdapter<ActivityModel>
     private Context context;
     private LayoutInflater inflater;
     private List<ActivityModel> list;
-    private SparseBooleanArray selected;
+    //private SparseBooleanArray selected;
 
     public SportListAdapter(Context context, int layoutResource, List<ActivityModel> list)
     {
@@ -28,7 +28,7 @@ public class SportListAdapter extends ArrayAdapter<ActivityModel>
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.list = list;
-        selected = new SparseBooleanArray();
+        //selected = new SparseBooleanArray();
     }
 
     public View getView(int position, View view, ViewGroup parent)
