@@ -1,5 +1,6 @@
 package mylife.org.mylife;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,15 +22,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridView;
 
-import com.androidplot.Plot;
-import com.androidplot.ui.AnchorPosition;
-import com.androidplot.ui.XLayoutStyle;
-import com.androidplot.ui.YLayoutStyle;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.XYPlotZoomPan;
 
-import com.androidplot.xy.XYStepMode;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -43,6 +37,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 public class Sport extends FragmentActivity implements ActionBar.TabListener
 {
+    final static double speedRatio = 18/5;
+
     ViewPager mViewPager;
     SectionsPagerAdapter mSectionsPagerAdapter;
     long id;
@@ -299,30 +295,28 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                         .getMap();
 
                 BaseManager bm = new BaseManager(getActivity().getApplicationContext());
-                ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+                ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
-                if(!wynik.isEmpty())
+                if(!locs.isEmpty())
                 {
                     final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                     ArrayList<LatLng> routePoints = new ArrayList<LatLng>();
-                    for(LocationModel location: wynik)
+                    for(LocationModel location: locs)
                     {
                         routePoints.add(new LatLng(location.getLatitude(), location.getLongitude()));
                         bounds.include(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
 
-                    Polyline route = mapFragment.addPolyline(new PolylineOptions().color(Color.BLUE));
+                    Polyline route = mapFragment.addPolyline(new PolylineOptions().color(PlotExtended.lineColor));
                     route.setPoints(routePoints);
 
-                    LatLng startPosition = new LatLng(wynik.get(0).getLatitude(),
-                        wynik.get(0).getLongitude());
+                    LatLng startPosition = new LatLng(locs.get(0).getLatitude(), locs.get(0).getLongitude());
                     mapFragment.addMarker(new MarkerOptions().position(startPosition)
-                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title("Start"));
+                        .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title(getResources().getString(R.string.map_start)));
 
-                    LatLng finishPosition = new LatLng(wynik.get(wynik.size()-1).getLatitude(),
-                            wynik.get(wynik.size()-1).getLongitude());
+                    LatLng finishPosition = new LatLng(locs.get(locs.size()-1).getLatitude(), locs.get(locs.size()-1).getLongitude());
                     mapFragment.addMarker(new MarkerOptions().position(finishPosition)
-                            .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("Finisz"));
+                        .draggable(false).icon(BitmapDescriptorFactory.defaultMarker(196)).title(getResources().getString(R.string.map_finish)));
 
                     ViewTreeObserver vto = map.getViewTreeObserver();
                     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
@@ -337,8 +331,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     });
                 }
             }
-            catch (Exception e) {
-            Log.i("info", e.getMessage());}
+            catch (Exception e) { }
 
             return map;
         }
@@ -349,37 +342,15 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
 
-            ArrayList<LocationModel> wynik = bm.getActivityLocations(getArguments().getLong("id"));
+            ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
-            if(!wynik.isEmpty()) {
-                int n = wynik.size();
-                float[] result = new float[3];
-                float all = 0;
+            final PlotExtended plot = (PlotExtended) page.findViewById(R.id.gps_plot);
+            plot.setLabels(getResources().getString(R.string.gps_plot_xlabel),
+                           getResources().getString(R.string.gps_plot_ylabel));
 
-                final PlotExtended plot = (PlotExtended) page.findViewById(R.id.gps_plot);
-                plot.setLabels("Dystans (km)", "Prędkość (km/h)");
-
-                ArrayList<Double> xAxis = new ArrayList<Double>();
-                ArrayList<Double> yAxis = new ArrayList<Double>();
-
-                LocationModel last = wynik.get(0);
-
-                for (int i = 2; i < n; i++) {
-                    LocationModel curr = wynik.get(i);
-
-                    Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
-                    all += result[0];
-
-                    double currY = ((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000;
-                    xAxis.add((double) all);
-                    yAxis.add(currY);
-
-                    last = curr;
-                }
-
-                SimpleXYSeries series = new SimpleXYSeries(xAxis, yAxis, null);
-                LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
-                plot.addSeries(series, seriesFormat);
+            if(!locs.isEmpty())
+            {
+                plot.addSeries(getLocationSeries(locs), getSeriesFormatter());
             }
 
             return page;
@@ -389,7 +360,86 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         {
             View page = inflater.inflate(R.layout.sport_page5, container, false);
 
+            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+
+            ArrayList<PulseModel> pulse = bm.getActivityPulses(getArguments().getLong("id"));
+
+            final PlotExtended pulsePlot = (PlotExtended)page.findViewById(R.id.pulse_plot);
+            pulsePlot.setLabels(getResources().getString(R.string.pulse_plot_xlabel),
+                                getResources().getString(R.string.pulse_plot_ylabel));
+
+            pulsePlot.setDomainValueFormat(new DecimalFormat("#"));
+            pulsePlot.setRangeValueFormat(new DecimalFormat("#"));
+
+            if(!pulse.isEmpty())
+            {
+                pulsePlot.addSeries(getPulseSeries(pulse), getSeriesFormatter());
+            }
+
             return page;
+        }
+
+        public LineAndPointFormatter getSeriesFormatter()
+        {
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+            seriesFormat.getLinePaint().setColor(PlotExtended.lineColor);
+            seriesFormat.getLinePaint().setStrokeWidth(seriesFormat.getLinePaint().getStrokeWidth()*PlotExtended.lineScale);
+            seriesFormat.getFillPaint().setColor(PlotExtended.fillColor);
+            seriesFormat.getVertexPaint().setColor(Color.TRANSPARENT);
+
+            return seriesFormat;
+        }
+
+        public SimpleXYSeries getLocationSeries(ArrayList<LocationModel> locs)
+        {
+            ArrayList<Double> xAxis = new ArrayList<Double>();
+            ArrayList<Double> yAxis = new ArrayList<Double>();
+
+            int n = locs.size();
+            float[] result = new float[3];
+            float dist = 0;
+
+            xAxis.add(0.0);
+            yAxis.add(0.0);
+            LocationModel last = locs.get(0);
+
+            for (int i = 1; i < n; i++)
+            {
+                LocationModel curr = locs.get(i);
+
+                Location.distanceBetween(last.getLatitude(), last.getLongitude(), curr.getLatitude(), curr.getLongitude(), result);
+                dist += result[0];
+
+                double speed = ((double) result[0] / (curr.getDateTimestamp() - last.getDateTimestamp())) * 1000 * speedRatio;
+                xAxis.add((double) dist / 1000);
+                yAxis.add(speed);
+
+                last = curr;
+            }
+
+            return new SimpleXYSeries(xAxis, yAxis, null);
+        }
+
+        public SimpleXYSeries getPulseSeries(ArrayList<PulseModel> pulse)
+        {
+            ArrayList<Double> xAxis = new ArrayList<Double>();
+            ArrayList<Integer> yAxis = new ArrayList<Integer>();
+
+            int n = pulse.size();
+
+            PulseModel first = pulse.get(0);
+            xAxis.add(0.0);
+            yAxis.add(first.getValue());
+
+            for(int i = 1; i < n; i++)
+            {
+                PulseModel curr = pulse.get(i);
+
+                xAxis.add((curr.getDateTimestamp()-first.getDateTimestamp()) / 1000);
+                yAxis.add(curr.getValue());
+            }
+
+            return new SimpleXYSeries(xAxis, yAxis, null);
         }
 
         /*public void update(String data)

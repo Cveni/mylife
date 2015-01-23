@@ -11,9 +11,15 @@
     <string name="title_activity_sport">Aktywność</string>
     <string name="sport_tab1">Informacje</string>
     <string name="sport_tab2">Statystyki</string>
-    <string name="sport_tab3">Mapa</string>
+    <string name="sport_tab3">Trasa</string>
     <string name="sport_tab4">Prędkość</string>
     <string name="sport_tab5">Puls</string>
+    <string name="map_start">Start</string>
+    <string name="map_finish">Koniec</string>
+    <string name="gps_plot_xlabel">Dystans (km)</string>
+    <string name="gps_plot_ylabel">Prędkość (km/h)</string>
+    <string name="pulse_plot_xlabel">Czas (sek)</string>
+    <string name="pulse_plot_ylabel">Puls (bpm)</string>
 
     <string name="title_activity_sport_list">Lista aktywności</string>
 

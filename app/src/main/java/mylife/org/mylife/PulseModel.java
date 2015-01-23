@@ -15,7 +15,7 @@ public class PulseModel
         this.dateTimestamp = dateTimestamp;
     }
 
-    public double getValue()
+    public int getValue()
     {
         return value;
     }

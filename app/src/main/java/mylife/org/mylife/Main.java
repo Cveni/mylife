@@ -70,7 +70,7 @@ public class Main extends Activity
     {
         pm.stop();
 
-        Toast.makeText(getApplicationContext(), "Zakończono rejestrację aktywności (wykonano "+bm.getActivityLocations(id).size()+" pomiarów)", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Zakończono rejestrację aktywności (wykonano "+bm.getActivityPulses(id).size()+" pomiarów)", Toast.LENGTH_LONG).show();
     }
 
     public void akcja3(View v)
