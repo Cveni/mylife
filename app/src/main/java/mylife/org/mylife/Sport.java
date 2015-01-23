@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -209,7 +210,15 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 case 1:
                     return page2(inflater, container, savedInstanceState);
                 case 2:
-                    return page3(inflater, container, savedInstanceState);
+                    switch(getArguments().getInt("device"))
+                    {
+                        case 0:
+                            return page3(inflater, container, savedInstanceState);
+                        case 1:
+                            return page5(inflater, container, savedInstanceState);
+                        case 2:
+                            return page3(inflater, container, savedInstanceState);
+                    }
                 case 3:
                     return page4(inflater, container, savedInstanceState);
                 case 4:
@@ -235,7 +244,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
             String[] titles = getResources().getStringArray(R.array.gps_stats_titles);
-            String[] data = {"-", "-", "-", "-", "-", "-", "-", "-"};
+            String[] data = {"", "", "", "", "", "", "", ""};
 
             int device = getArguments().getInt("device");
 
@@ -260,11 +269,11 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     last = curr;
                 }
 
-                double distTotal = (double)dist;
-                data[3] = (double)(Math.round(distTotal/10)) / 100+" "+getResources().getString(R.string.unit_km);
-
                 if(!speeds.isEmpty())
                 {
+                    double distTotal = (double)dist;
+                    data[3] = (double)(Math.round(distTotal/10)) / 100+" "+getResources().getString(R.string.unit_km);
+
                     double avgSpeed = (distTotal/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())) * 1000;
                     data[2] = (double)(Math.round(avgSpeed*100*speedRatio)) / 100+" "+getResources().getString(R.string.unit_kmh);
 
@@ -318,10 +327,23 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 data[5] = maxPulse+" "+getResources().getString(R.string.unit_bpm);
             }
 
-            for(int i = 0; i < titles.length; i++)
+            if(device == 0 || device == 2)
             {
-                gi.add(new GridItem(titles[i], data[i]));
+                for(int i = 0; i < 4; i++)
+                {
+                    gi.add(new GridItem(titles[i], data[i]));
+                }
             }
+
+            if(device == 1 || device == 2)
+            {
+                for(int i = 4; i < 7; i++)
+                {
+                    gi.add(new GridItem(titles[i], data[i]));
+                }
+            }
+
+            gi.add(new GridItem(titles[7], data[7]));
 
             ViewTreeObserver vto = page.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
@@ -331,7 +353,18 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 {
                     GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
                     GridView gv = (GridView)page.findViewById(R.id.gps_grid);
-                    ga.setCellHeight(page.getMeasuredHeight()/4);
+
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    {
+                        ga.setCellHeight(page.getMeasuredHeight()/4);
+                        gv.setNumColumns(2);
+                    }
+                    else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    {
+                        ga.setCellHeight(page.getMeasuredHeight()/2);
+                        gv.setNumColumns(4);
+                    }
+
                     gv.setAdapter(ga);
 
                     page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -359,7 +392,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 BaseManager bm = new BaseManager(getActivity().getApplicationContext());
                 ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
 
-                if(!locs.isEmpty())
+                if(locs.size() > 1)
                 {
                     final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                     ArrayList<LatLng> routePoints = new ArrayList<LatLng>();
@@ -410,7 +443,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             plot.setLabels(getResources().getString(R.string.gps_plot_xlabel),
                            getResources().getString(R.string.gps_plot_ylabel));
 
-            if(!locs.isEmpty())
+            if(locs.size() > 1)
             {
                 plot.addSeries(getLocationSeries(locs), getSeriesFormatter());
             }
@@ -433,7 +466,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             pulsePlot.setDomainValueFormat(new DecimalFormat("#"));
             pulsePlot.setRangeValueFormat(new DecimalFormat("#"));
 
-            if(!pulse.isEmpty())
+            if(pulse.size() > 1)
             {
                 pulsePlot.addSeries(getPulseSeries(pulse), getSeriesFormatter());
             }
