@@ -16,6 +16,7 @@ import java.util.List;
 public class GridAdapter extends ArrayAdapter<GridItem>
 {
     public static final double spaceScale = 2.5;
+    public static final double smallScale = 1.9;
 
     private Context context;
     private LayoutInflater inflater;
@@ -48,6 +49,8 @@ public class GridAdapter extends ArrayAdapter<GridItem>
 
         TextView tvValue = (TextView)view.findViewById(R.id.grid_item_value);
         tvValue.setText(list.get(position).getValue());
+
+        if(list.get(position).getSmall()) tvValue.setTextSize((float)(tvValue.getTextSize()/smallScale));
 
         return view;
     }

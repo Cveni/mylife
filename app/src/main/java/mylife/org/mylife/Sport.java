@@ -2,6 +2,7 @@ package mylife.org.mylife;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -261,9 +262,35 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 if(type.equals(typesdb[i])) data[1] = types[i];
             }
 
-            for(int i = 0; i < 4; i++)
+            Calendar time = Calendar.getInstance();
+            time.setTimeInMillis(acti.getDate());
+            data[2] = time.get(Calendar.DAY_OF_MONTH)+"."+String.format("%02d", (time.get(Calendar.MONTH)+1))+"."+time.get(Calendar.YEAR)
+                      +"-"+time.get(Calendar.HOUR_OF_DAY)+":"+String.format("%02d", time.get(Calendar.MINUTE));
+
+            long gpstime = 0;
+            long pulsetime = 0;
+            long delta = 0;
+
+            if((device == 0 || device == 2) && locs.size() > 1) gpstime = (long)locs.get(locs.size()-1).getDateTimestamp();
+            if((device == 1 || device == 2) && pulse.size() > 1) pulsetime = (long)pulse.get(pulse.size()-1).getDateTimestamp();
+
+            if(device == 0 && locs.size() > 1) delta = (gpstime-acti.getDate())/1000;
+            else if(device == 1 && pulse.size() > 1) delta = (pulsetime-acti.getDate())/1000;
+            else if(device == 2 && (locs.size() > 1 || pulse.size() > 1))
             {
-                gi.add(new GridItem(titles[i], data[i]));
+                if(gpstime > pulsetime && locs.size() > 1) delta = (gpstime-acti.getDate())/1000;
+                else if(pulsetime > gpstime && pulse.size() > 1) delta = (pulsetime-acti.getDate())/1000;
+            }
+
+            if(delta != 0) data[3] = delta/(60 * 60)+":"+String.format("%02d", ((delta%(60 * 60))/60))+":"+String.format("%02d", (delta%60));
+
+            for(int i = 0; i < 2; i++)
+            {
+                gi.add(new GridItem(titles[i], data[i], false));
+            }
+            for(int i = 2; i < 4; i++)
+            {
+                gi.add(new GridItem(titles[i], data[i], true));
             }
 
             ViewTreeObserver vto = page.getViewTreeObserver();
@@ -395,7 +422,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             {
                 for(int i = 0; i < 4; i++)
                 {
-                    gi.add(new GridItem(titles[i], data[i]));
+                    gi.add(new GridItem(titles[i], data[i], false));
                 }
             }
 
@@ -403,11 +430,11 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             {
                 for(int i = 4; i < 7; i++)
                 {
-                    gi.add(new GridItem(titles[i], data[i]));
+                    gi.add(new GridItem(titles[i], data[i], false));
                 }
             }
 
-            gi.add(new GridItem(titles[7], data[7]));
+            gi.add(new GridItem(titles[7], data[7], false));
 
             ViewTreeObserver vto = page.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
@@ -603,7 +630,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         /*public void update(String data)
         {
-            // soon
+
         }*/
     }
 
