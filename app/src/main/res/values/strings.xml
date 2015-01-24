@@ -28,11 +28,11 @@
 
     <string-array name="sport_activity_types">
         <item>Aerobik</item>
-        <item>Bieganie</item>
-        <item>Jazda na łyżwach</item>
-        <item>Jazda na nartach</item>
-        <item>Jazda na rolkach</item>
-        <item>Jazda na rowerze</item>
+        <item>Bieg</item>
+        <item>Łyżwy</item>
+        <item>Narty</item>
+        <item>Rolki</item>
+        <item>Rower</item>
         <item>Spacer</item>
     </string-array>
 
@@ -46,7 +46,21 @@
         <item>spacer</item>
     </string-array>
 
-    <string-array name="gps_stats_titles">
+    <string name="sport_info_name_title">NAZWA</string>
+    <string-array name="sport_info_titles">
+        <item>Czujnik</item>
+        <item>Typ</item>
+        <item>Początek</item>
+        <item>Czas trwania</item>
+        <item>Czujniki</item>
+    </string-array>
+    <string-array name="sport_info_device">
+        <item>GPS</item>
+        <item>Puls</item>
+        <item>GPS + Puls</item>
+    </string-array>
+
+    <string-array name="sport_stats_titles">
         <item>Min. prędkość</item>
         <item>Max. prędkość</item>
         <item>Śr. prędkość</item>

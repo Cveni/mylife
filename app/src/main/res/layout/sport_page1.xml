@@ -5,4 +5,53 @@
     android:layout_height="match_parent"
     tools:context="mylife.org.mylife.Sport$SportPage">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/sport_name_cell">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold"
+                android:text="@string/sport_info_name_title"
+                android:id="@+id/sport_name_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/sport_name_space" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:id="@+id/sport_name_value" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <GridView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/sport_name_cell"
+        android:id="@+id/sport_info_grid"
+        android:stretchMode="columnWidth"
+        android:numColumns="2" />
+
 </RelativeLayout>

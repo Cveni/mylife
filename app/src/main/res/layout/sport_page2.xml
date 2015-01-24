@@ -8,7 +8,7 @@
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/gps_grid"
+        android:id="@+id/sport_stats_grid"
         android:stretchMode="columnWidth"
         android:numColumns="2" />
 

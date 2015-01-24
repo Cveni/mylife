@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GridAdapter extends ArrayAdapter<GridItem>
 {
-    public final double spaceScale = 2.5;
+    public static final double spaceScale = 2.5;
 
     private Context context;
     private LayoutInflater inflater;

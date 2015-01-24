@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
@@ -229,7 +231,69 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
         public View page1(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View page = inflater.inflate(R.layout.sport_page1, container, false);
+            final View page = inflater.inflate(R.layout.sport_page1, container, false);
+
+            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+            ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
+            ArrayList<PulseModel> pulse = bm.getActivityPulses(getArguments().getLong("id"));
+            ActivityModel acti = bm.getActivityInformation(getArguments().getLong("id"));
+            int device = getArguments().getInt("device");
+
+            final ArrayList<GridItem> gi = new ArrayList<GridItem>();
+            String[] devices = getResources().getStringArray(R.array.sport_info_device);
+            String[] types = getResources().getStringArray(R.array.sport_activity_types);
+            String[] typesdb = getResources().getStringArray(R.array.sport_activity_types_db);
+            String[] titles = getResources().getStringArray(R.array.sport_info_titles);
+            String[] data = {"", "", "", ""};
+
+            TextView tvName = (TextView)page.findViewById(R.id.sport_name_value);
+            tvName.setText(acti.getName());
+
+            TextView tvSpace = (TextView)page.findViewById(R.id.sport_name_space);
+            tvSpace.setTextSize((float)(tvSpace.getTextSize()/GridAdapter.spaceScale));
+
+            if(device == 2) titles[0] = titles[4];
+            data[0] = devices[device];
+
+            String type = acti.getType();
+            for(int i = 0; i < types.length; i++)
+            {
+                if(type.equals(typesdb[i])) data[1] = types[i];
+            }
+
+            for(int i = 0; i < 4; i++)
+            {
+                gi.add(new GridItem(titles[i], data[i]));
+            }
+
+            ViewTreeObserver vto = page.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    RelativeLayout cell = (RelativeLayout)page.findViewById(R.id.sport_name_cell);
+                    GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
+                    GridView gv = (GridView)page.findViewById(R.id.sport_info_grid);
+
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    {
+                        cell.setMinimumHeight(page.getMeasuredHeight()/4);
+                        ga.setCellHeight(page.getMeasuredHeight()/4);
+                        gv.setNumColumns(2);
+                    }
+                    else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    {
+                        cell.setMinimumHeight(page.getMeasuredHeight()/2);
+                        ga.setCellHeight(page.getMeasuredHeight()/2);
+                        gv.setNumColumns(4);
+                    }
+
+                    gv.setAdapter(ga);
+
+                    page.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            });
 
             return page;
         }
@@ -243,7 +307,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             ArrayList<PulseModel> pulse = bm.getActivityPulses(getArguments().getLong("id"));
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
-            String[] titles = getResources().getStringArray(R.array.gps_stats_titles);
+            String[] titles = getResources().getStringArray(R.array.sport_stats_titles);
             String[] data = {"", "", "", "", "", "", "", ""};
 
             int device = getArguments().getInt("device");
@@ -352,7 +416,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                 public void onGlobalLayout()
                 {
                     GridAdapter ga = new GridAdapter(getActivity(), R.layout.grid_item, gi);
-                    GridView gv = (GridView)page.findViewById(R.id.gps_grid);
+                    GridView gv = (GridView)page.findViewById(R.id.sport_stats_grid);
 
                     if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                     {

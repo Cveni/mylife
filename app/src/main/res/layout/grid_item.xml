@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="TYTUŁ"
             android:id="@+id/grid_item_title" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold"
-            android:text="-"
             android:id="@+id/grid_item_value" />
 
     </LinearLayout>
