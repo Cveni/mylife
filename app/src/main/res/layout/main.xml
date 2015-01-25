@@ -76,14 +76,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn3"
                 android:id="@+id/main_btn3"
-                android:onClick="akcja"/>
+                android:onClick="btn3"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_main_btn4"
                 android:id="@+id/main_btn4"
-                android:onClick="akcja2"/>
+                android:onClick="btn4"/>
 
             <TextView
                 android:layout_width="match_parent"

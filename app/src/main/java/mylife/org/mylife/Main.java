@@ -1,16 +1,18 @@
 package mylife.org.mylife;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by Cveni on 2014-11-03.
@@ -52,30 +54,43 @@ public class Main extends Activity
         startActivity(i);
     }
 
+    public void btn3(View v)
+    {
+        if(!hasStepCounter())
+        {
+            alertStepCounter();
+        }
+        else
+        {
+            //Intent i = new Intent(getApplicationContext(), .class);
+            //startActivity(i);
+        }
+    }
+
+    public void btn4(View v)
+    {
+        if(!hasStepCounter())
+        {
+            alertStepCounter();
+        }
+        else
+        {
+            //Intent i = new Intent(getApplicationContext(), .class);
+            //startActivity(i);
+        }
+    }
+
     public void btn5(View v)
     {
-        Intent i = new Intent(getApplicationContext(), Settings.class);
-        startActivity(i);
-    }
-
-    public void akcja(View v)
-    {
-        id = bm.createNewActivity("", "");
-        pm.start(id);
-
-        Toast.makeText(getApplicationContext(), "Rozpoczęto rejestrację aktywności", Toast.LENGTH_LONG).show();
-    }
-
-    public void akcja2(View v)
-    {
-        pm.stop();
-
-        Toast.makeText(getApplicationContext(), "Zakończono rejestrację aktywności (wykonano "+bm.getActivityPulses(id).size()+" pomiarów)", Toast.LENGTH_LONG).show();
-    }
-
-    public void akcja3(View v)
-    {
-        Toast.makeText(getApplicationContext(), "Pokonano "+sc.getSteps()+" kroków", Toast.LENGTH_LONG).show();
+        if(isGPSServiceWorking() || isPulseServiceWorking())
+        {
+            alertWorking();
+        }
+        else
+        {
+            Intent i = new Intent(getApplicationContext(), Settings.class);
+            startActivity(i);
+        }
     }
 
     public boolean checkGPS()
@@ -106,6 +121,67 @@ public class Main extends Activity
                 Intent i = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(i);
             }
+        });
+
+        alert.show();
+    }
+
+    public boolean isGPSServiceWorking()
+    {
+        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if(GPSService.class.getName().equals(service.service.getClassName())) return true;
+        }
+
+        return false;
+    }
+
+    public boolean isPulseServiceWorking()
+    {
+        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if(HRMService.class.getName().equals(service.service.getClassName())) return true;
+        }
+
+        return false;
+    }
+
+    public void alertWorking()
+    {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.main_alert_working_title));
+        alert.setMessage(getResources().getString(R.string.main_alert_working_msg));
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            { }
+        });
+
+        alert.show();
+    }
+
+    public boolean hasStepCounter()
+    {
+        SensorManager sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+        if(countSensor == null) return false;
+        else return true;
+    }
+
+    public void alertStepCounter()
+    {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.settings_alert_step_title));
+        alert.setMessage(getResources().getString(R.string.settings_alert_step_msg));
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            { }
         });
 
         alert.show();

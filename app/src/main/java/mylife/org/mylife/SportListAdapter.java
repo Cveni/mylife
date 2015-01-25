@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SportListAdapter extends ArrayAdapter<ActivityModel>
 {
-    public static final double iconScale = 1.4;
+    public static final double iconScale = 1.5;
 
     private Context context;
     private LayoutInflater inflater;
@@ -69,12 +69,12 @@ public class SportListAdapter extends ArrayAdapter<ActivityModel>
         }
 
         ActivityModel acti = list.get(position);
-
-        TextView tvName = (TextView) view.findViewById(R.id.sport_list_item_name);
-
         String[] types = context.getResources().getStringArray(R.array.sport_activity_types);
         String[] typesdb = context.getResources().getStringArray(R.array.sport_activity_types_db);
         String type = acti.getType();
+        int device = (int)acti.getDevice();
+
+        TextView tvName = (TextView) view.findViewById(R.id.sport_list_item_name);
 
         for(int i = 0; i < types.length; i++)
         {
@@ -101,8 +101,6 @@ public class SportListAdapter extends ArrayAdapter<ActivityModel>
         RelativeLayout.LayoutParams rllp2 = (RelativeLayout.LayoutParams) gps.getLayoutParams();
         rllp2.height = height;
         gps.setLayoutParams(rllp2);
-
-        int device = (int)acti.getDevice();
 
         switch(device)
         {
