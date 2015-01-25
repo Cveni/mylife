@@ -35,12 +35,12 @@ public class BaseManager
         baseHelper.close();
     }
 
-    public long createNewActivity(String name, String type)
+    public long createNewActivity(String name, String type, int device)
     {
         ContentValues values = new ContentValues();
         values.put(BaseHelper.ACTIVITIES_COLUMN_NAME, name);
         values.put(BaseHelper.ACTIVITIES_COLUMN_DATE, Long.valueOf(System.currentTimeMillis()).toString());
-        values.put(BaseHelper.ACTIVITIES_COLUMN_DEVICE, "0");
+        values.put(BaseHelper.ACTIVITIES_COLUMN_DEVICE, device);
         values.put(BaseHelper.ACTIVITIES_COLUMN_TYPE, type);
 
         open();

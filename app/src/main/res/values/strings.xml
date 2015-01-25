@@ -3,6 +3,7 @@
     <string name="app_name">My-Life</string>
 
     <string name="str_main_btn1">Nowa aktywność</string>
+    <string name="str_main_btn1_alt">Zatrzymaj aktywność</string>
     <string name="str_main_btn2">Lista aktywności</string>
     <string name="str_main_btn3">Nowy krok</string>
     <string name="str_main_btn4">Lista kroków</string>

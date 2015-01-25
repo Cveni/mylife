@@ -8,6 +8,8 @@
     <string name="main_alert_gps_msg">Określanie lokalizacji przez GPS jest wyłączone. Przejść do ustawień urządzenia?</string>
     <string name="main_alert_working_title">Rejestracja aktywności</string>
     <string name="main_alert_working_msg">Ustawienia są aktualnie niedostępne. Aby kontynuować, zakończ najpierw rejestrację aktywności sportowej</string>
+    <string name="main_alert_first_start_title">Ustawienia</string>
+    <string name="main_alert_first_start_msg">Wygląda na to, że aplikacja została uruchomiona po raz pierwszy. Czy chcesz przejść do ustawień programu i spersonalizować swoje dane?</string>
     <string name="main_record_start_toast">Rozpoczęto rejestrację aktywności</string>
     <string name="main_record_stop_toast">Zakończono rejestrację aktywności</string>
 
