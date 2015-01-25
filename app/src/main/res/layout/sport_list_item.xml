@@ -2,24 +2,48 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp">
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_action_favorite"
+        android:id="@+id/sport_list_pulse_icon" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/sport_list_pulse_icon"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_action_place"
+        android:id="@+id/sport_list_gps_icon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/sport_list_gps_icon"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:id="@+id/sport_list_item_name"
-        android:text="test1"
-        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/sport_list_gps_icon"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textStyle="bold"
         android:id="@+id/sport_list_item_date"
-        android:text="test2"
-        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_below="@id/sport_list_item_name"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="6dp" />
 
 </RelativeLayout>

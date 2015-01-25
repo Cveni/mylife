@@ -34,32 +34,6 @@ public class SportList extends Activity {
                 startActivity(i);
             }
         });
-
-        /*LinearLayout ll = (LinearLayout)findViewById(R.id.lista);
-
-        for(int i = 0; i < 15; i++)
-        {
-            final long id = bm.getActivityInformation(i).getLong("id", -1);
-            final long date = bm.getActivityInformation(i).getLong("date", -1);
-
-            if(id != -1)
-            {
-                Date d = new Date();
-                d.setTime(date);
-                Button but = new Button(this);
-                but.setText(d.toString());
-                but.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent i = new Intent(getApplicationContext(), Sport.class);
-                        i.putExtra("id", id);
-                        startActivity(i);
-                    }
-                });
-                ll.addView(but);
-            }
-        }*/
     }
 
     /*@Override

@@ -91,7 +91,7 @@ public class BaseManager
 
         Cursor activitiesCursor = database.query(BaseHelper.TABLE_NAME_ACTIVITIES, allColumns,
                 null, null,
-                null, null, null, null);
+                null, null, BaseHelper.ACTIVITIES_COLUMN_ID+" DESC", null);
 
         if(activitiesCursor.moveToFirst())
         {

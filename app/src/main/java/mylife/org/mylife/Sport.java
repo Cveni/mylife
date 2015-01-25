@@ -265,7 +265,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             Calendar time = Calendar.getInstance();
             time.setTimeInMillis(acti.getDate());
             data[2] = time.get(Calendar.DAY_OF_MONTH)+"."+String.format("%02d", (time.get(Calendar.MONTH)+1))+"."+time.get(Calendar.YEAR)
-                      +"-"+time.get(Calendar.HOUR_OF_DAY)+":"+String.format("%02d", time.get(Calendar.MINUTE));
+                      +" - "+time.get(Calendar.HOUR_OF_DAY)+":"+String.format("%02d", time.get(Calendar.MINUTE));
 
             long gpstime = 0;
             long pulsetime = 0;
