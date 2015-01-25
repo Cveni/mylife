@@ -13,6 +13,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ public class Main extends Activity
     public static GPSManager gps;
     public static HRMManager pm;
     public static long id;
+
+    public String name;
+    public String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,12 +64,12 @@ public class Main extends Activity
             }
             else
             {
-                startActivity("Testowanie", "bieg");
+                name = "";
+                type = "";
+
+                nameDialog();
             }
         }
-
-        //Intent i = new Intent(getApplicationContext(), Sport.class);
-        //startActivity(i);
     }
 
     public void btn2(View v)
@@ -241,7 +246,7 @@ public class Main extends Activity
         alert.show();
     }
 
-    public void startActivity(String name, String type)
+    public void startActivity()
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean gps = settings.getBoolean(getResources().getString(R.string.settings_gps_use_key), true);
@@ -301,5 +306,60 @@ public class Main extends Activity
 
         if(choice == 0) tv.setText(getResources().getString(R.string.str_main_btn1));
         else if(choice == 1) tv.setText(getResources().getString(R.string.str_main_btn1_alt));
+    }
+
+    public void nameDialog()
+    {
+        final EditText et = new EditText(this);
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.main_record_start_name_title));
+        alert.setView(et);
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.alert_negative), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                name = et.getText().toString();
+
+                typeDialog();
+            }
+        });
+
+        alert.show();
+    }
+
+    public void typeDialog()
+    {
+        ArrayAdapter<String> types = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice, getResources().getStringArray(R.array.sport_activity_types));
+        final AlertDialog alert = new AlertDialog.Builder(this).setSingleChoiceItems(types, 0, null).create();
+        alert.setTitle(getResources().getString(R.string.main_record_start_type_title));
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.alert_negative), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                type = getResources().getStringArray(R.array.sport_activity_types_db)[alert.getListView().getCheckedItemPosition()];
+
+                startActivity();
+            }
+        });
+
+        alert.show();
     }
 }

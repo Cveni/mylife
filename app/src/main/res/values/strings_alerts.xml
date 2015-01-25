@@ -12,6 +12,8 @@
     <string name="main_alert_first_start_msg">Wygląda na to, że aplikacja została uruchomiona po raz pierwszy. Czy chcesz przejść do ustawień programu i spersonalizować swoje dane?</string>
     <string name="main_record_start_toast">Rozpoczęto rejestrację aktywności</string>
     <string name="main_record_stop_toast">Zakończono rejestrację aktywności</string>
+    <string name="main_record_start_name_title">Nazwa aktywności</string>
+    <string name="main_record_start_type_title">Typ aktywności</string>
 
     <string name="settings_alert_default_title">Ustawienia domyślne</string>
     <string name="settings_alert_default_msg">Przywrócić domyślne wartości ustawień?</string>
