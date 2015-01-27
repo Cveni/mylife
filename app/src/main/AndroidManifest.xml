@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="mylife.org.mylife" >
 
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -29,7 +29,6 @@
         </activity>
         <activity
             android:name=".Sport"
-            android:label="@string/title_activity_sport"
             android:parentActivityName=".SportList"
             android:theme="@style/AppThemeBar" >
         </activity>
@@ -49,6 +48,11 @@
             android:name=".StepList"
             android:label="@string/title_activity_step_list"
             android:parentActivityName=".Main"
+            android:theme="@style/AppThemeBar" >
+        </activity>
+        <activity
+            android:name=".Step"
+            android:parentActivityName=".StepList"
             android:theme="@style/AppThemeBar" >
         </activity>
 

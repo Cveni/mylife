@@ -63,7 +63,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
         actionBar.setTitle(getIntent().getStringExtra("name"));
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-        mViewPager = (ViewPager)findViewById(R.id.sportPager);
+        mViewPager = (ViewPager)findViewById(R.id.sport_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()

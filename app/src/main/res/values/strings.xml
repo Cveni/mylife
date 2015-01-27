@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">My-Life</string>
+
     <string name="str_main_btn1">Nowa aktywność</string>
     <string name="str_main_btn1_alt">Zatrzymaj aktywność</string>
     <string name="str_main_btn2">Lista aktywności</string>
     <string name="str_main_btn3">Nowy krok</string>
     <string name="str_main_btn4">Lista kroków</string>
     <string name="str_main_btn5">Ustawienia</string>
-    <string name="title_activity_sport">Aktywność</string>
+
     <string name="sport_tab1">Informacje</string>
     <string name="sport_tab2">Statystyki</string>
     <string name="sport_tab3">Trasa</string>
@@ -20,9 +20,16 @@
     <string name="gps_plot_ylabel">Prędkość (km/h)</string>
     <string name="pulse_plot_xlabel">Czas (sek)</string>
     <string name="pulse_plot_ylabel">Puls (bpm)</string>
+
+    <string name="step_tab1">Informacje</string>
+    <string name="step_tab2">Kroki</string>
+    <string name="step_plot_xlabel">Czas (godz.)</string>
+    <string name="step_plot_ylabel">Kroki (tys.)</string>
+
     <string name="title_activity_sport_list">Lista aktywności</string>
-    <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_step_list">Lista kroków</string>
+
+    <string name="title_activity_settings">Ustawienia</string>
     <string name="settings_action_reset">Domyślne</string>
 
     <string-array name="sport_activity_types">
@@ -45,6 +52,7 @@
     </string-array>
 
     <string name="sport_info_name_title">NAZWA</string>
+    <string name="step_info_date_title">DATA</string>
 
     <string-array name="sport_info_titles">
         <item>Czujnik</item>

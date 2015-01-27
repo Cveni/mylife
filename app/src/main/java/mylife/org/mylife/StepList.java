@@ -30,9 +30,9 @@ public class StepList extends Activity
             {
                 Calendar day = (Calendar)parent.getAdapter().getItem(position);
 
-                /*Intent i = new Intent(getApplicationContext(), Sport.class);
-                i.putExtra("day", day.getTimeInMillis());
-                startActivity(i);*/
+                Intent i = new Intent(getApplicationContext(), Step.class);
+                i.putExtra("date", day.getTimeInMillis());
+                startActivity(i);
             }
         });
     }

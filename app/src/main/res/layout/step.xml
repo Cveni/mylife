@@ -1,7 +1,7 @@
 <mylife.org.mylife.ViewPagerExtended
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sport_pager"
+    android:id="@+id/step_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mylife.org.mylife.Sport" />
+    tools:context="mylife.org.mylife.Step" />
