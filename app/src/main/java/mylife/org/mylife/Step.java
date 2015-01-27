@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentStatePagerAdapter;
@@ -14,6 +15,13 @@ import android.view.LayoutInflater;
 //import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYStepMode;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Step extends FragmentActivity implements ActionBar.TabListener
 {
@@ -32,6 +40,7 @@ public class Step extends FragmentActivity implements ActionBar.TabListener
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setTitle(getIntent().getStringExtra("name"));
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         mViewPager = (ViewPager)findViewById(R.id.step_pager);
@@ -169,7 +178,78 @@ public class Step extends FragmentActivity implements ActionBar.TabListener
         {
             View page = inflater.inflate(R.layout.step_page2, container, false);
 
+            BaseManager bm = new BaseManager(getActivity().getApplicationContext());
+
+            Calendar day = Calendar.getInstance();
+            day.setTimeInMillis(getArguments().getLong("date"));
+            ArrayList<StepModel> steps = bm.getStepsByDay(day);
+
+            PlotExtended plot = (PlotExtended) page.findViewById(R.id.step_plot);
+            plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL.SUBDIVIDE, 12);
+            plot.setLabels(getResources().getString(R.string.step_plot_xlabel),
+                    getResources().getString(R.string.step_plot_ylabel));
+
+            plot.addSeries(getStepSeries(steps), getSeriesFormatter());
+
             return page;
+        }
+
+        public LineAndPointFormatter getSeriesFormatter()
+        {
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+            seriesFormat.getLinePaint().setColor(PlotExtended.lineColor);
+            seriesFormat.getLinePaint().setStrokeWidth(seriesFormat.getLinePaint().getStrokeWidth()*PlotExtended.lineScale);
+            seriesFormat.getFillPaint().setColor(PlotExtended.fillColor);
+            seriesFormat.getVertexPaint().setColor(Color.TRANSPARENT);
+
+            return seriesFormat;
+        }
+
+        public ArrayList<Integer> getStepIntervals(ArrayList<StepModel> steps)
+        {
+            ArrayList<Integer> intervals = new ArrayList<Integer>();
+
+            int first = -(int)steps.get(0).getValue();
+            int last = 0;
+            intervals.add(0);
+
+            for(int i = 1; i < steps.size(); i++)
+            {
+                int curr = (int)steps.get(i).getValue();
+
+                if(curr < last)
+                {
+                    first = last+first;
+                }
+
+                intervals.add(curr+first);
+
+                last = curr;
+            }
+
+            return intervals;
+        }
+
+        public SimpleXYSeries getStepSeries(ArrayList<StepModel> steps)
+        {
+            ArrayList<Integer> intervals = getStepIntervals(steps);
+
+            ArrayList<Double> xAxis = new ArrayList<Double>();
+            ArrayList<Double> yAxis = new ArrayList<Double>();
+
+            int n = steps.size();
+
+            for(int i = 0; i < n; i++)
+            {
+                StepModel curr = steps.get(i);
+
+                Calendar time = curr.getDate();
+                xAxis.add(time.get(Calendar.HOUR_OF_DAY)+(double)time.get(Calendar.MINUTE)/60.0);
+
+                yAxis.add((double)(intervals.get(i))/1000);
+            }
+
+            return new SimpleXYSeries(xAxis, yAxis, null);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 //import android.view.Menu;
 //import android.view.MenuItem;
 
@@ -32,6 +33,7 @@ public class StepList extends Activity
 
                 Intent i = new Intent(getApplicationContext(), Step.class);
                 i.putExtra("date", day.getTimeInMillis());
+                i.putExtra("name", ((TextView)(view.findViewById(R.id.step_list_item_date))).getText());
                 startActivity(i);
             }
         });

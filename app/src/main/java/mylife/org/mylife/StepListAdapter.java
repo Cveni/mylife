@@ -1,7 +1,6 @@
 package mylife.org.mylife;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import java.util.List;
 
 public class StepListAdapter extends ArrayAdapter<Calendar>
 {
-    public static float textScale = 1.5f;
-
     private Context context;
     private LayoutInflater inflater;
     private List<Calendar> list;

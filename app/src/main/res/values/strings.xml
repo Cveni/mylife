@@ -21,7 +21,7 @@
     <string name="pulse_plot_xlabel">Czas (sek)</string>
     <string name="pulse_plot_ylabel">Puls (bpm)</string>
 
-    <string name="step_tab1">Informacje</string>
+    <string name="step_tab1">Dane</string>
     <string name="step_tab2">Kroki</string>
     <string name="step_plot_xlabel">Czas (godz.)</string>
     <string name="step_plot_ylabel">Kroki (tys.)</string>
