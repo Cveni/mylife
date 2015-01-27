@@ -209,6 +209,41 @@ public class BaseManager
         close();
     }
 
+    public ArrayList<Calendar> getStepDays()
+    {
+        ArrayList<Calendar> firstDays = new ArrayList<Calendar>();
+        ArrayList<Calendar> finalDays = new ArrayList<Calendar>();
+
+        String[] cursorColumns = {BaseHelper.STEPS_COLUMN_DATE};
+
+        open();
+
+        Cursor daysCursor = database.query(BaseHelper.TABLE_NAME_STEPS, cursorColumns,
+                null, null, null, null, BaseHelper.STEPS_COLUMN_ID+" DESC", null);
+
+        if(daysCursor.moveToFirst())
+        {
+            do
+            {
+                Calendar day = Calendar.getInstance();
+                day.setTimeInMillis(daysCursor.getLong(daysCursor.getColumnIndex(BaseHelper.STEPS_COLUMN_DATE)));
+                day.set(Calendar.HOUR_OF_DAY, 0);
+                day.set(Calendar.MINUTE, 0);
+                day.set(Calendar.SECOND, 0);
+                day.set(Calendar.MILLISECOND, 0);
+
+                if(!firstDays.contains(day)) firstDays.add(day);
+                else if(!finalDays.contains(day)) finalDays.add(day);
+
+            } while(daysCursor.moveToNext());
+        }
+
+        daysCursor.close();
+        close();
+
+        return finalDays;
+    }
+
     public ArrayList<StepModel> getStepsByDay(Calendar day)
     {
         day.set(Calendar.HOUR, 0);
@@ -227,6 +262,7 @@ public class BaseManager
 
         String[] cursorColumns = {BaseHelper.STEPS_COLUMN_DATE, BaseHelper.STEPS_COLUMN_VALUE};
         String[] cursorWhereArgs = {String.valueOf(dayStartTimestamp), String.valueOf(dayEndTimestamp)};
+
         open();
 
         Cursor stepsCursor = database.query(BaseHelper.TABLE_NAME_STEPS, cursorColumns,
@@ -241,6 +277,7 @@ public class BaseManager
             } while(stepsCursor.moveToNext());
         }
 
+        stepsCursor.close();
         close();
 
         return steps;
