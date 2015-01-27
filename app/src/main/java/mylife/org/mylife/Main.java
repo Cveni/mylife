@@ -84,6 +84,7 @@ public class Main extends Activity
         {
             alertStepCounter();
         }
+        //else if(za malo krokow dzisiaj)
         else
         {
             //Intent i = new Intent(getApplicationContext(), .class);
@@ -99,8 +100,8 @@ public class Main extends Activity
         }
         else
         {
-            //Intent i = new Intent(getApplicationContext(), .class);
-            //startActivity(i);
+            Intent i = new Intent(getApplicationContext(), StepList.class);
+            startActivity(i);
         }
     }
 

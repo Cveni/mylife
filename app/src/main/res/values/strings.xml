@@ -1,14 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">My-Life</string>
-
     <string name="str_main_btn1">Nowa aktywność</string>
     <string name="str_main_btn1_alt">Zatrzymaj aktywność</string>
     <string name="str_main_btn2">Lista aktywności</string>
     <string name="str_main_btn3">Nowy krok</string>
     <string name="str_main_btn4">Lista kroków</string>
     <string name="str_main_btn5">Ustawienia</string>
-
     <string name="title_activity_sport">Aktywność</string>
     <string name="sport_tab1">Informacje</string>
     <string name="sport_tab2">Statystyki</string>
@@ -21,10 +20,9 @@
     <string name="gps_plot_ylabel">Prędkość (km/h)</string>
     <string name="pulse_plot_xlabel">Czas (sek)</string>
     <string name="pulse_plot_ylabel">Puls (bpm)</string>
-
     <string name="title_activity_sport_list">Lista aktywności</string>
-
     <string name="title_activity_settings">Ustawienia</string>
+    <string name="title_activity_step_list">Lista kroków</string>
     <string name="settings_action_reset">Domyślne</string>
 
     <string-array name="sport_activity_types">
@@ -36,7 +34,6 @@
         <item>Rower</item>
         <item>Spacer</item>
     </string-array>
-
     <string-array name="sport_activity_types_db">
         <item>aero</item>
         <item>bieg</item>
@@ -48,6 +45,7 @@
     </string-array>
 
     <string name="sport_info_name_title">NAZWA</string>
+
     <string-array name="sport_info_titles">
         <item>Czujnik</item>
         <item>Typ</item>
@@ -60,7 +58,6 @@
         <item>Puls</item>
         <item>GPS + Puls</item>
     </string-array>
-
     <string-array name="sport_stats_titles">
         <item>Min. prędkość</item>
         <item>Max. prędkość</item>
@@ -71,6 +68,7 @@
         <item>Śr. puls</item>
         <item>Kalorie</item>
     </string-array>
+
     <string name="unit_kmh">km/h</string>
     <string name="unit_km">km</string>
     <string name="unit_bpm">bpm</string>
