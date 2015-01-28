@@ -19,6 +19,7 @@ public class StepListAdapter extends ArrayAdapter<Calendar>
     private Context context;
     private LayoutInflater inflater;
     private List<Calendar> list;
+    private BaseManager bm;
 
     public StepListAdapter(Context context, int layoutResource, List<Calendar> list)
     {
@@ -26,6 +27,7 @@ public class StepListAdapter extends ArrayAdapter<Calendar>
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.list = list;
+        bm = new BaseManager(context);
     }
 
     public View getView(int position, View view, ViewGroup parent)
@@ -36,6 +38,9 @@ public class StepListAdapter extends ArrayAdapter<Calendar>
         }
 
         Calendar day = list.get(position);
+
+        TextView tvCount = (TextView)view.findViewById(R.id.step_list_item_count);
+        tvCount.setText(context.getResources().getString(R.string.step_list_prefix)+" "+Step.StepPage.getStepSum(bm.getStepsByDay(day)));
 
         TextView tvDate = (TextView)view.findViewById(R.id.step_list_item_date);
         tvDate.setText(day.get(Calendar.DAY_OF_MONTH) + "." + String.format("%02d", (day.get(Calendar.MONTH) + 1)) + "." + day.get(Calendar.YEAR));

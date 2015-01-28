@@ -71,7 +71,7 @@ public class GPSService extends Service{
                 };
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        long time = Long.parseLong(settings.getString(getApplicationContext().getResources().getString(R.string.settings_gps_freq_key), "0"));
+        long time = Long.parseLong(settings.getString(getApplicationContext().getResources().getString(R.string.settings_gps_freq_key), "200"));
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, 0, locationListener);
     }

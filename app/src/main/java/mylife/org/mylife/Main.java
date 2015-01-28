@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 /**
  * Created by Cveni on 2014-11-03.
  */
@@ -87,8 +89,14 @@ public class Main extends Activity
         //else if(za malo krokow dzisiaj)
         else
         {
-            //Intent i = new Intent(getApplicationContext(), .class);
-            //startActivity(i);
+            Calendar today = Calendar.getInstance();
+            long time = System.currentTimeMillis();
+            today.setTimeInMillis(time);
+
+            Intent i = new Intent(getApplicationContext(), Step.class);
+            i.putExtra("date", time);
+            i.putExtra("name", today.get(Calendar.DAY_OF_MONTH) + "." + String.format("%02d", (today.get(Calendar.MONTH) + 1)) + "." + today.get(Calendar.YEAR));
+            startActivity(i);
         }
     }
 

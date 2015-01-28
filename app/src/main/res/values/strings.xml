@@ -4,9 +4,9 @@
 
     <string name="str_main_btn1">Nowa aktywność</string>
     <string name="str_main_btn1_alt">Zatrzymaj aktywność</string>
-    <string name="str_main_btn2">Lista aktywności</string>
-    <string name="str_main_btn3">Nowy krok</string>
-    <string name="str_main_btn4">Lista kroków</string>
+    <string name="str_main_btn2">Aktywności sportowe</string>
+    <string name="str_main_btn3">Dzisiejsza aktywność</string>
+    <string name="str_main_btn4">Aktywności dzienne</string>
     <string name="str_main_btn5">Ustawienia</string>
 
     <string name="sport_tab1">Informacje</string>
@@ -26,8 +26,10 @@
     <string name="step_plot_xlabel">Czas (godz.)</string>
     <string name="step_plot_ylabel">Kroki (tys.)</string>
 
-    <string name="title_activity_sport_list">Lista aktywności</string>
-    <string name="title_activity_step_list">Lista kroków</string>
+    <string name="title_activity_sport_list">Aktywności sportowe</string>
+
+    <string name="title_activity_step_list">Aktywności dzienne</string>
+    <string name="step_list_prefix">(Kroki)</string>
 
     <string name="title_activity_settings">Ustawienia</string>
     <string name="settings_action_reset">Domyślne</string>
@@ -82,7 +84,7 @@
 
     <string-array name="step_info_titles">
         <item>Liczba kroków</item>
-        <item>Śr. kroków</item>
+        <item>Średnio kroków</item>
         <item>Kalorie</item>
     </string-array>
 

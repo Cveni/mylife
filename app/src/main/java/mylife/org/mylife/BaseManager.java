@@ -246,13 +246,13 @@ public class BaseManager
 
     public ArrayList<StepModel> getStepsByDay(Calendar day)
     {
-        day.set(Calendar.HOUR, 0);
+        day.set(Calendar.HOUR_OF_DAY, 0);
         day.set(Calendar.MINUTE, 0);
         day.set(Calendar.SECOND, 0);
         day.set(Calendar.MILLISECOND, 0);
         long dayStartTimestamp = day.getTimeInMillis();
 
-        day.set(Calendar.HOUR, 23);
+        day.set(Calendar.HOUR_OF_DAY, 23);
         day.set(Calendar.MINUTE, 59);
         day.set(Calendar.SECOND, 59);
         day.set(Calendar.MILLISECOND, 499);

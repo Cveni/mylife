@@ -28,6 +28,7 @@
         android:layout_toLeftOf="@id/sport_list_gps_icon"
         android:singleLine="true"
         android:ellipsize="end"
+        android:textStyle="bold"
         android:id="@+id/sport_list_item_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_alignParentTop="true"
