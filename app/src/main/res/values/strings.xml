@@ -52,7 +52,6 @@
     </string-array>
 
     <string name="sport_info_name_title">NAZWA</string>
-    <string name="step_info_date_title">DATA</string>
 
     <string-array name="sport_info_titles">
         <item>Czujnik</item>
@@ -61,11 +60,13 @@
         <item>Czas trwania</item>
         <item>Czujniki</item>
     </string-array>
+
     <string-array name="sport_info_device">
         <item>GPS</item>
         <item>Puls</item>
         <item>GPS + Puls</item>
     </string-array>
+
     <string-array name="sport_stats_titles">
         <item>Min. prędkość</item>
         <item>Max. prędkość</item>
@@ -77,9 +78,18 @@
         <item>Kalorie</item>
     </string-array>
 
+    <string name="step_info_date_title">DATA</string>
+
+    <string-array name="step_info_titles">
+        <item>Liczba kroków</item>
+        <item>Śr. kroków</item>
+        <item>Kalorie</item>
+    </string-array>
+
     <string name="unit_kmh">km/h</string>
     <string name="unit_km">km</string>
     <string name="unit_bpm">bpm</string>
     <string name="unit_kcal">kcal</string>
+    <string name="unit_per_hour">/h</string>
 
 </resources>
