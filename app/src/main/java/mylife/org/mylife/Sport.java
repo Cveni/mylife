@@ -8,9 +8,12 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
@@ -332,12 +335,23 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             BaseManager bm = new BaseManager(getActivity().getApplicationContext());
             ArrayList<LocationModel> locs = bm.getActivityLocations(getArguments().getLong("id"));
             ArrayList<PulseModel> pulse = bm.getActivityPulses(getArguments().getLong("id"));
+            ActivityModel acti = bm.getActivityInformation(getArguments().getLong("id"));
 
             final ArrayList<GridItem> gi = new ArrayList<GridItem>();
+            String[] typesdb = getResources().getStringArray(R.array.sport_activity_types_db);
             String[] titles = getResources().getStringArray(R.array.sport_stats_titles);
             String[] data = {"", "", "", "", "", "", "", ""};
 
             int device = getArguments().getInt("device");
+            int type = 0;
+            String typeS = acti.getType();
+            for(int i = 0; i < typesdb.length; i++)
+            {
+                if(typeS.equals(typesdb[i])) type = i;
+            }
+
+            double avgSpeed = 0;
+            double avgPulse = 0;
 
             if((device == 0 || device == 2) && !locs.isEmpty())
             {
@@ -365,7 +379,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                     double distTotal = (double)dist;
                     data[3] = (double)(Math.round(distTotal/10)) / 100+" "+getResources().getString(R.string.unit_km);
 
-                    double avgSpeed = (distTotal/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())) * 1000;
+                    avgSpeed = (distTotal/(last.getDateTimestamp()-locs.get(0).getDateTimestamp())) * 1000;
                     data[2] = (double)(Math.round(avgSpeed*100*speedRatio)) / 100+" "+getResources().getString(R.string.unit_kmh);
 
                     double minSpeed = speeds.get(0);
@@ -408,7 +422,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
                 if(n > 1)
                 {
-                    double avgPulse = (all + (1.0 / (double)(n-1)) * last.getValue() * (last.getDateTimestamp() - pulse.get(0).getDateTimestamp()))
+                    avgPulse = (all + (1.0 / (double)(n-1)) * last.getValue() * (last.getDateTimestamp() - pulse.get(0).getDateTimestamp()))
                             / (((double)n / (double)(n-1)) * (last.getDateTimestamp() - pulse.get(0).getDateTimestamp()));
 
                     data[6] = (double)Math.round(avgPulse*10) / 10+" "+getResources().getString(R.string.unit_bpm);
@@ -416,6 +430,26 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
 
                 data[4] = minPulse+" "+getResources().getString(R.string.unit_bpm);
                 data[5] = maxPulse+" "+getResources().getString(R.string.unit_bpm);
+            }
+
+            long gpstime = 0;
+            long pulsetime = 0;
+            long delta = 0;
+
+            if((device == 0 || device == 2) && locs.size() > 1) gpstime = (long)locs.get(locs.size()-1).getDateTimestamp();
+            if((device == 1 || device == 2) && pulse.size() > 1) pulsetime = (long)pulse.get(pulse.size()-1).getDateTimestamp();
+
+            if(device == 0 && locs.size() > 1) delta = (gpstime-acti.getDate())/1000;
+            else if(device == 1 && pulse.size() > 1) delta = (pulsetime-acti.getDate())/1000;
+            else if(device == 2 && (locs.size() > 1 || pulse.size() > 1))
+            {
+                if(gpstime > pulsetime && locs.size() > 1) delta = (gpstime-acti.getDate())/1000;
+                else if(pulsetime > gpstime && pulse.size() > 1) delta = (pulsetime-acti.getDate())/1000;
+            }
+
+            if(delta != 0)
+            {
+                data[7] = calorieCount(device, type, delta, avgSpeed*speedRatio, avgPulse)+" "+getResources().getString(R.string.unit_kcal);
             }
 
             if(device == 0 || device == 2)
@@ -626,6 +660,139 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             }
 
             return new SimpleXYSeries(xAxis, yAxis, null);
+        }
+
+        public int calorieCount(int device, int type, long time, double speed, double pulse)
+        {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            Resources res = getResources();
+
+            double calories = 0;
+            double timeInMinutes = (int)(time/60);
+
+            boolean isMale = settings.getString(res.getString(R.string.settings_user_gender_key), "M").equals("M");
+            double weight = Integer.parseInt(settings.getString(res.getString(R.string.settings_user_weight_key), "80"));
+            double age = Integer.parseInt(settings.getString(res.getString(R.string.settings_user_age_key), "25"));
+
+            if (type == 0)
+            {
+                if(device==0)
+                {
+                    calories=(timeInMinutes*5.83);
+                }
+                else
+                {
+                    if(isMale)
+                    {
+                        calories=((-55.0969 + (0.6309 *pulse) + (0.1988 *weight) + (0.2017 *age))/4.184) *timeInMinutes;
+                    }
+                    else
+                    {
+                        calories=((-20.4022 + (0.4472 *pulse) - (0.1263 *weight) + (0.074 *age))/4.184) *timeInMinutes;
+                    }
+                }
+            }
+            else if (type == 1)
+            {
+                if(device==0)
+                {
+                    calories=speed*weight*timeInMinutes/60.857;
+                }
+                else if(device==1)
+                {
+                    if(isMale)
+                    {
+                        calories=((-55.0969 + (0.6309 *pulse) + (0.1988 *weight) + (0.2017 *age))/4.184) *timeInMinutes;
+                    }
+                    else
+                    {
+                        calories=((-20.4022 + (0.4472 *pulse) - (0.1263 *weight) + (0.074 *age))/4.184) *timeInMinutes;
+                    }
+                }
+                else
+                {
+                    if(isMale)
+                    {
+                        calories=((-55.0969 + (0.6309 *pulse) + (0.1988 *weight) + (0.2017 *age))/4.184) *timeInMinutes;
+                    }
+                    else
+                    {
+                        calories=((-20.4022 + (0.4472 *pulse) - (0.1263 *weight) + (0.074 *age))/4.184) *timeInMinutes;
+                    }
+                    calories+=speed*weight*timeInMinutes/60.857;
+                    calories=calories/2;
+                }
+            }
+            else if (type == 2)
+            {
+                if(device==1)
+                {
+                    calories=(timeInMinutes*8.28);
+                }
+                else
+                {
+                    calories=6.0848*weight-78.2673+96.07*(speed/1.609-8);
+                }
+            }
+            else if (type == 3)
+            {
+                calories=timeInMinutes*8.52;
+            }
+            else if (type == 4)
+            {
+                if(device==1)
+                {
+                    calories=(timeInMinutes*6.97);
+                }
+                else
+                {
+                    calories=5.48532*weight-70.4403+86.4*(speed/1.609-8);
+                }
+            }
+            else if (type == 5)
+            {
+                if(device==0)
+                {
+                    calories=(0.6345*speed*speed+0.7563*speed+36.725)/3600;
+                }
+                else if(device==1)
+                {
+                    if(isMale)
+                    {
+                        calories=((-55.0969 + (0.6309 *pulse) + (0.1988 *weight) + (0.2017 *age))/4.184) *timeInMinutes;
+                    }
+                    else
+                    {
+                        calories=((-20.4022 + (0.4472 *pulse) - (0.1263 *weight) + (0.074 *age))/4.184) *timeInMinutes;
+                    }
+                }
+                else
+                {
+                    if(isMale)
+                    {
+                        calories=((-55.0969 + (0.6309 *pulse) + (0.1988 *weight) + (0.2017 *age))/4.184) *timeInMinutes;
+                    }
+                    else
+                    {
+                        calories=((-20.4022 + (0.4472 *pulse) - (0.1263 *weight) + (0.074 *age))/4.184) *timeInMinutes;
+                    }
+                    calories=(0.6345*speed*speed+0.7563*speed+36.725)/3600;
+                    calories=calories/2;
+                }
+            }
+            else if (type == 6)
+            {
+                if(device==1)
+                {
+                    calories=timeInMinutes*4.08;
+                }
+                else
+                {
+                    calories=(0.0215*speed*speed*speed-0.1765*speed*speed+0.871*speed+1.4577)*weight*timeInMinutes/60;
+                }
+            }
+
+            return (int) calories;
         }
 
         /*public void update(String data)
