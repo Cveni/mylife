@@ -22,8 +22,8 @@ public class PlotExtended extends XYPlotZoomPan
     final float labelScale = 1.8f;
     final float valueScale = 1.3f;
     final static float lineScale = 1.8f;
-    final static int lineColor = Color.rgb(251, 126, 20);
-    final static int fillColor = Color.rgb(51, 181, 229);
+    final static int fillColor = Color.rgb(251, 126, 20);
+    final static int lineColor = Color.rgb(51, 181, 229);
 
     public PlotExtended(Context context, String title, RenderMode mode)
     {

@@ -173,7 +173,7 @@ public class HRMScan {
                         if (!taskStopped && (System.currentTimeMillis()-lastTime)>frequency) {
                             lastTime=System.currentTimeMillis();
                             computedHR = textHeartRate;
-                            base.savePulse(computedHeart, activityIndex);
+                            base.savePulse(computedHeartRate, activityIndex);
                         }
                     }
                 };
