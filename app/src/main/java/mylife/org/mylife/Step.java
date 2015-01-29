@@ -248,7 +248,7 @@ public class Step extends FragmentActivity implements ActionBar.TabListener
             ArrayList<StepModel> steps = bm.getStepsByDay(day);
 
             PlotExtended plot = (PlotExtended) page.findViewById(R.id.step_plot);
-            plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL.SUBDIVIDE, 12);
+            plot.setDomainStep(XYStepMode.SUBDIVIDE, 13);
             plot.setLabels(getResources().getString(R.string.step_plot_xlabel),
                     getResources().getString(R.string.step_plot_ylabel));
 

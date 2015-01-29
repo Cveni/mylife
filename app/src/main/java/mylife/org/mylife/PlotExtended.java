@@ -66,8 +66,8 @@ public class PlotExtended extends XYPlotZoomPan
 
         getLegendWidget().setVisible(false);
 
-        setDomainStep(XYStepMode.INCREMENT_BY_VAL.SUBDIVIDE, 10);
-        setRangeStep(XYStepMode.INCREMENT_BY_VAL.SUBDIVIDE, 10);
+        setDomainStep(XYStepMode.SUBDIVIDE, 11);
+        setRangeStep(XYStepMode.SUBDIVIDE, 11);
     }
 
     public void setLabels(String xAxis, String yAxis)

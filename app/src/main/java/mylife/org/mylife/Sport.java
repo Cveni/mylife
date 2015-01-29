@@ -668,7 +668,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             Resources res = getResources();
 
             double calories = 0;
-            double timeInMinutes = (int)(time/60);
+            double timeInMinutes = ((double)time)/60;
 
             boolean isMale = settings.getString(res.getString(R.string.settings_user_gender_key), "M").equals("M");
             double weight = Integer.parseInt(settings.getString(res.getString(R.string.settings_user_weight_key), "80"));
