@@ -86,7 +86,10 @@ public class Main extends Activity
         {
             alertStepCounter();
         }
-        //else if(za malo krokow dzisiaj)
+        else if(!enoughStepsToday())
+        {
+            alertNoStepsToday();
+        }
         else
         {
             Calendar today = Calendar.getInstance();
@@ -367,6 +370,33 @@ public class Main extends Activity
 
                 startActivity();
             }
+        });
+
+        alert.show();
+    }
+
+    public boolean enoughStepsToday()
+    {
+        Calendar today = Calendar.getInstance();
+        today.setTimeInMillis(System.currentTimeMillis());
+
+        BaseManager bm = new BaseManager(getApplicationContext());
+        int count = bm.getStepsByDay(today).size();
+
+        if(count > 1) return true;
+        else return false;
+    }
+
+    public void alertNoStepsToday()
+    {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.main_alert_enough_steps_title));
+        alert.setMessage(getResources().getString(R.string.main_alert_enough_steps_msg));
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            { }
         });
 
         alert.show();
