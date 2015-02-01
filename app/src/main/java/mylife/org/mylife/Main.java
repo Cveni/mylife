@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -62,6 +64,16 @@ public class Main extends Activity
             if(!checkGPS())
             {
                 alertGPS();
+                return;
+            }
+            else if(!checkPulse1())
+            {
+                alertPulse1();
+                return;
+            }
+            else if(!checkPulse2())
+            {
+                alertPulse2();
                 return;
             }
             else
@@ -155,6 +167,88 @@ public class Main extends Activity
             public void onClick(DialogInterface dialog, int which)
             {
                 Intent i = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        });
+
+        alert.show();
+    }
+
+    public boolean checkPulse1()
+    {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean pulse = settings.getBoolean(getResources().getString(R.string.settings_pulse_use_key), false);
+
+        PackageManager pm = getApplicationContext().getPackageManager();
+
+        try
+        {
+            pm.getPackageInfo("com.dsi.ant.service.socket", PackageManager.GET_ACTIVITIES);
+            return true;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            return !pulse;
+        }
+    }
+
+    public boolean checkPulse2()
+    {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean pulse = settings.getBoolean(getResources().getString(R.string.settings_pulse_use_key), false);
+
+        PackageManager pm = getApplicationContext().getPackageManager();
+
+        try
+        {
+            pm.getPackageInfo("com.dsi.ant.plugins.antplus", PackageManager.GET_ACTIVITIES);
+            return true;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            return !pulse;
+        }
+    }
+
+    public void alertPulse1()
+    {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.main_alert_pulse1_title));
+        alert.setMessage(getResources().getString(R.string.main_alert_pulse1_msg));
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.alert_negative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_store), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.dsi.ant.service.socket"));
+                startActivity(i);
+            }
+        });
+
+        alert.show();
+    }
+
+    public void alertPulse2()
+    {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getResources().getString(R.string.main_alert_pulse2_title));
+        alert.setMessage(getResources().getString(R.string.main_alert_pulse2_msg));
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.alert_negative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.alert_store), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.dsi.ant.plugins.antplus"));
                 startActivity(i);
             }
         });

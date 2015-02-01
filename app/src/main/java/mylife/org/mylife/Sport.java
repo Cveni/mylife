@@ -527,7 +527,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
                         bounds.include(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
 
-                    Polyline route = mapFragment.addPolyline(new PolylineOptions().color(PlotExtended.lineColor));
+                    Polyline route = mapFragment.addPolyline(new PolylineOptions().color(PlotExtended.fillColor));
                     route.setPoints(routePoints);
 
                     LatLng startPosition = new LatLng(locs.get(0).getLatitude(), locs.get(0).getLongitude());
@@ -753,7 +753,7 @@ public class Sport extends FragmentActivity implements ActionBar.TabListener
             {
                 if(device==0)
                 {
-                    calories=(0.6345*speed*speed+0.7563*speed+36.725)/3600;
+                    calories=((0.6345*speed*speed+0.7563*speed+36.725)/30)*timeInMinutes;
                 }
                 else if(device==1)
                 {

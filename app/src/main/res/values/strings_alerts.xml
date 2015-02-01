@@ -3,9 +3,14 @@
     <string name="alert_positive">OK</string>
     <string name="alert_negative">Anuluj</string>
     <string name="alert_settings">Ustawienia</string>
+    <string name="alert_store">Sklep</string>
 
     <string name="main_alert_gps_title">GPS</string>
     <string name="main_alert_gps_msg">Określanie lokalizacji przez GPS jest wyłączone. Przejść do ustawień urządzenia?</string>
+    <string name="main_alert_pulse1_title">Pulsometr</string>
+    <string name="main_alert_pulse1_msg">Wykorzystanie pulsometru wymaga zainstalowania aplikacji ANT Radio Service. Przejść do Sklepu Play?</string>
+    <string name="main_alert_pulse2_title">Pulsometr</string>
+    <string name="main_alert_pulse2_msg">Wykorzystanie pulsometru wymaga zainstalowania aplikacji ANT+ Plugins Service. Przejść do Sklepu Play?</string>
     <string name="main_alert_working_title">Rejestracja aktywności</string>
     <string name="main_alert_working_msg">Ustawienia są aktualnie niedostępne. Aby kontynuować, zakończ najpierw rejestrację aktywności sportowej</string>
     <string name="main_alert_first_start_title">Ustawienia</string>
