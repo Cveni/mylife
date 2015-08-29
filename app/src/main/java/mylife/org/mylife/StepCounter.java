@@ -1,40 +1,69 @@
 package mylife.org.mylife;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Binder;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Szymon on 2014-11-03.
  */
 
-public class StepCounter
+public class StepCounter extends Service implements SensorEventListener
 {
     private SensorManager sensorManager;
-    private static double steps;
+    private double steps;
+    private IBinder binder;
 
-    public void start(Context context)
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
     {
-        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
         if(countSensor != null)
-            sensorManager.registerListener(new SensorEventListener() {
-                @Override
-                public void onSensorChanged(SensorEvent sensorEvent) {
-                    steps = sensorEvent.values[0];
-                }
+        {
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int i) {
-
-                }
-            }, countSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        return Service.START_STICKY;
     }
 
     public double getSteps()
     {
         return steps;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent)
+    {
+        binder = new StepCounterBinder();
+
+        return binder;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent)
+    {
+        steps = sensorEvent.values[0];
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i)
+    { }
+
+    public class StepCounterBinder extends Binder
+    {
+        StepCounter getService()
+        {
+            return StepCounter.this;
+        }
     }
 }

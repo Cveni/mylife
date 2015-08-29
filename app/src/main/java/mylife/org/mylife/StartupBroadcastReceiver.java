@@ -22,8 +22,8 @@ public class StartupBroadcastReceiver extends BroadcastReceiver
         if(intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED")
             && settings.getBoolean(context.getResources().getString(R.string.settings_step_use_key), false))
         {
-            StepCounter stepCounter = new StepCounter();
-            stepCounter.start(context);
+            Intent stepCounter = new Intent(context,StepCounter.class);
+            context.startService(stepCounter);
 
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent stepIntent = new Intent(context, StepBroadcastReceiver.class);
@@ -32,7 +32,7 @@ public class StartupBroadcastReceiver extends BroadcastReceiver
             int freq = Integer.parseInt(settings.getString(context.getResources().getString(R.string.settings_step_freq_key), "3600"));
             long time = System.currentTimeMillis() - (System.currentTimeMillis() % (freq * 1000)) + (freq * 1000);
 
-            am.setRepeating(AlarmManager.RTC_WAKEUP, time, freq * 1000, sender);
+            am.setExact(AlarmManager.RTC_WAKEUP, time, sender);
         }
     }
 }
