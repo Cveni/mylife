@@ -1,21 +1,34 @@
 My-Life 
 =======
 
-[](/screenshots/Logo.png "My-Life logo")
+![](/screenshots/Logo.png?raw=true "My-Life logo")
 
 ## Overview
 
-placeholder
+My-Life is a mobile application designed for the Android platform. Using different smartphone sensors this software can record data of user activity during the day or while working out. Gathered information is shown as a set of statistics and also presented in a graph or map.
 
-## Screenshots
+My-Life was created in Android Studio environment as a group project by students of Wroc³aw University of Technology. Application is currently available only in Polish.
+
+### Used technologies and software:
+- ANT+
+- AndroidPlot
+- Google Maps
+- SQLite
+
+Supported sensors:
+- GPS location 
+- Heart rate (compatible ANT+ device required)
+- Step counter (available on the Android platform from version 4.4)
+
+##Screenshots
 
 This is only selected part of what application has to offer. You can see more in [screenshots directory](/screenshots/).
 
 ![](/screenshots/Overview.png?raw=true "My-Life overview")
 
-## Download
+##Download
 
-[Here](/My-Life.apk?raw=true) you can get compiled version of **My-Life** as an .apk file. Application requires Android 4.4 (KitKat) or higher.
+[Here](/My-Life.apk?raw=true) you can get compiled version of My-Life as an .apk file. Application requires Android 4.4 (KitKat) or higher.
 
 ## License
 
@@ -23,6 +36,6 @@ This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 Inte
 
 ## Original authors
 
- - Andrzej Cwenar
- - Szymon Zielonka
- - Mateusz Bialczak
+- Andrzej Cwenar
+- Szymon Zielonka
+- Mateusz Bia³czak
