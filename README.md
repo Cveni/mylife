@@ -9,13 +9,13 @@ My-Life is a mobile application designed for the Android platform. Using differe
 
 My-Life was created in Android Studio environment as a group project by students of Wroclaw University of Technology. Application is currently available only in Polish.
 
-### Used technologies and software:
+### Used technologies and software
 - AndroidPlot
 - ANT+
 - Google Maps
 - SQLite
 
-### Supported sensors:
+### Supported sensors
 - GPS location 
 - Heart rate (compatible ANT+ device required)
 - Step counter (available on the Android platform from version 4.4)
