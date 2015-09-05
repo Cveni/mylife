@@ -28,7 +28,7 @@ This is only selected part of what application has to offer. You can see more in
 
 ## Download
 
-[Here](/My-Life.apk?raw=true) you can get compiled version of My-Life as an .apk file. Application requires Android 4.4 (KitKat) or higher.
+[Here](/My-Life.apk?raw=true) you can get compiled version of My-Life as an APK file. Application requires Android 4.4 (KitKat) or higher.
 
 ## License
 
